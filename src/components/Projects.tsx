@@ -81,8 +81,8 @@ const Projects = () => {
         "A modern, responsive portfolio website with smooth animations and professional design. Using the React framework, Framer Motion for animations, TypeScript for type safety, and Tailwind CSS for styling.",
       technologies: ["React", "Framer Motion", "TypeScript", "Tailwind CSS"],
       image: "/assets/projects/pw/pw-1.png",
-      github: "https://github.com/adedamolacoal/portfolio",
-      live: "https://adedamola-portfolio.vercel.app/",
+      github: "https://github.com/AdedamolaCoal/my_portfolio",
+      live: "https://adedamola-portfolio-ten.vercel.app",
       featured: true,
       images: [
         "/assets/projects/pw/pw-1.png",

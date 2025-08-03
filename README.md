@@ -24,7 +24,7 @@ A modern, responsive portfolio website built with React, TypeScript, and Framer 
 1. Clone the repository:
 
 ```bash
-git clone <your-repo-url>
+git clone https://github.com/AdedamolaCoal/my_portfolio.git
 cd my-portfolio
 ```
 
@@ -129,36 +129,6 @@ The portfolio is fully responsive and includes:
 - Adaptive grid layouts
 - Touch-friendly interactions
 
-## 🚀 Deployment
-
-### Vercel (Recommended)
-
-1. Push your code to GitHub
-2. Connect your repository to Vercel
-3. Deploy automatically
-
-### Netlify
-
-1. Build the project: `npm run build`
-2. Upload the `dist` folder to Netlify
-
-### GitHub Pages
-
-1. Add to `package.json`:
-
-```json
-{
-  "homepage": "https://yourusername.github.io/your-repo-name",
-  "scripts": {
-    "predeploy": "npm run build",
-    "deploy": "gh-pages -d dist"
-  }
-}
-```
-
-2. Install gh-pages: `npm install -D gh-pages`
-3. Deploy: `npm run deploy`
-
 ## 📄 License
 
 This project is open source and available under the [MIT License](LICENSE).
@@ -170,7 +140,5 @@ Contributions are welcome! Please feel free to submit a Pull Request.
 ## 📞 Contact
 
 If you have any questions or need help customizing the portfolio, feel free to reach out!
-
----
 
 **Note**: Remember to replace all placeholder content (email, phone, social links, projects) with your actual information before deploying.
