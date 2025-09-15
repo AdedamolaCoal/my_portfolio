@@ -1,181 +1,301 @@
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef } from "react";
 
 const About = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-
   return (
-    <section id="about" className="py-20 relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="about"
+      className="about-page container pl-10 sm:pt-12 pt-8 p-4 flex flex-col lg:flex-row items-center justify-around gap-10 mb-20"
+    >
+      {/* HTML Comment Elements */}
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="text-yellow-400 fixed sm:top-12 top-20 left-8 sm:left-28 font-Aurore -scroll-my-2.5"
+      >
+        &lt;body&gt;
+      </motion.span>
+
+      <div className="text-zone lg:w-2/3">
+        {/* Header Section */}
         <motion.div
-          ref={ref}
-          initial={{ opacity: 0, y: 50 }}
-          animate={isInView ? { opacity: 1, y: 0 } : {}}
-          transition={{ duration: 0.8 }}
-          className="text-center mb-16"
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="mb-12"
         >
-          <h2 className="text-4xl font-bold text-white mb-4">About Me</h2>
-          <p className="text-xl text-secondary max-w-3xl mx-auto">
-            Passionate about creating innovative solutions and pushing the
-            boundaries of web development
+          <h1 className="text-6xl sm:text-7xl font-bold text-glow mb-6">
+            <span className="string-animate-hover _18 text-yellow-400">A</span>
+            <span className="string-animate-hover _19 text-yellow-400">b</span>
+            <span className="string-animate-hover _20 text-yellow-400">o</span>
+            <span className="string-animate-hover _21 text-yellow-400">u</span>
+            <span className="string-animate-hover _22 text-yellow-400">t</span>
+            <span className="string-animate-hover _23 text-yellow-400"> </span>
+            <span className="string-animate-hover _24 text-yellow-400">M</span>
+            <span className="string-animate-hover _25 text-yellow-400">e</span>
+          </h1>
+
+          {/* About Stats */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4, duration: 0.8 }}
+            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
+          >
+            <div className="text-center p-4 bg-gradient-to-br from-yellow-400/10 to-orange-500/10 rounded-xl border border-yellow-400/20">
+              <div className="text-2xl font-bold text-yellow-400 mb-1">3+</div>
+              <div className="text-sm text-gray-300">Years Experience</div>
+            </div>
+            <div className="text-center p-4 bg-gradient-to-br from-blue-400/10 to-blue-500/10 rounded-xl border border-blue-400/20">
+              <div className="text-2xl font-bold text-blue-400 mb-1">25+</div>
+              <div className="text-sm text-gray-300">Technologies</div>
+            </div>
+            <div className="text-center p-4 bg-gradient-to-br from-green-400/10 to-green-500/10 rounded-xl border border-green-400/20">
+              <div className="text-2xl font-bold text-green-400 mb-1">4</div>
+              <div className="text-sm text-gray-300">Certifications</div>
+            </div>
+            <div className="text-center p-4 bg-gradient-to-br from-purple-400/10 to-purple-500/10 rounded-xl border border-purple-400/20">
+              <div className="text-2xl font-bold text-purple-400 mb-1">∞</div>
+              <div className="text-sm text-gray-300">Passion</div>
+            </div>
+          </motion.div>
+
+          {/* Quick Intro */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.8 }}
+            className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 shadow-2xl mb-8"
+          >
+            <div className="flex items-center space-x-4 mb-4">
+              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
+                <span className="text-2xl font-bold text-white">A</span>
+              </div>
+              <div>
+                <h2 className="text-2xl font-bold text-white">
+                  Adedamola Akinyomi
+                </h2>
+                <p className="text-yellow-400 text-lg font-medium">
+                  Full Stack Developer
+                </p>
+              </div>
+            </div>
+            <p className="text-gray-300 text-lg leading-relaxed">
+              Passionate about creating exceptional digital experiences through
+              clean code, innovative solutions, and user-centered design.
+              Specializing in Node.js, Angular, Ionic, TypeScript, and modern
+              web technologies.
+            </p>
+          </motion.div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.8, duration: 0.8 }}
+          className="about-text"
+        >
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
+            Short Intro
+          </h2>
+          <p className="text-white text-lg leading-relaxed mb-6">
+            Hi, I'm Damola Akinyomi, a passionate Full-Stack Developer focused
+            on building clean, interactive, and user-friendly web experiences
+            across healthcare, edutech, fintech, and enterprise sectors. I am a
+            graduate of the ALX Full-Stack Software Engineering Program (Cohort
+            22), which strengthened my discipline, resilience, and ability to
+            build end-to-end solutions under production-level standards. I also
+            hold certifications in Microsoft Azure Fundamentals, Azure Security
+            & Compliance, and Oracle Cloud Foundations.
           </p>
         </motion.div>
 
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Content */}
-          <motion.div
-            initial={{ opacity: 0, x: -50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="space-y-6"
-          >
-            <div className="professional-card p-8 rounded-xl">
-              <h3 className="text-2xl font-semibold text-white mb-4">
-                Who I Am
-              </h3>
-              <p className="text-secondary leading-relaxed mb-6">
-                I'm a dedicated full-stack software engineer with over 3 years
-                of experience in creating web applications that solve real world
-                problems. I have a strong focus on frontend development, with
-                experience in building scalable and intuitive applications
-                across the healthcare, fintech, and enterprise (ERP) sectors.
-                I've led and contributed to projects that involve complex user
-                workflows, API integrations, and real-time systems, using tools
-                like Angular, Node.js, and PostgreSQL.
-              </p>
-              <p className="text-secondary leading-relaxed mb-6">
-                On the frontend, I've had the oppotunity to work on projects
-                ranging from Angular 10+, Ionic 6+, and Tailwind CSS to develop
-                responsive interfaces and interactive dashboards. I'm also
-                conversant with libraries like NgRx and RxJs for state
-                management, Ngx-Charts for data visualization, and both primeng
-                andthe Angular Material UI library for building modern,
-                responsive web applications. My backend work includes building
-                RESTful APIs with Node.js and Express using Typescript,
-                implementing authentication (OAuth 2.0), real-time communication
-                with WebSockets, and integrating services like QoreID, Twilio,
-                and Mailgun.
-              </p>
-              <p className="text-secondary leading-relaxed">
-                I hold certifications in Microsoft Azure Fundamentals, Azure
-                Security & Compliance, and Oracle Cloud Foundations, reflecting
-                my commitment to continuous learning and delivering
-                cloud-resilient software. I'm also a proud graduate of the ALX
-                Full-Stack Software Engineering Program (Cohort 22) — an
-                intensive, industry-aligned training program that sharpened my
-                ability to design and build scalable web applications using
-                modern technologies. Through the program, I gained deep
-                experience in system design, DevOps practices, collaborative
-                engineering, and problem-solving in real-world team settings. It
-                strengthened my discipline, resilience, and ability to build
-                end-to-end solutions under production-level standards.
-              </p>
-            </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.0, duration: 0.8 }}
+          className="about-text"
+        >
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
+            My Journey
+          </h2>
+          <p className="text-white text-lg leading-relaxed mb-6">
+            I started my journey into web development with curiosity about how
+            websites worked, and it has grown into a passion for creating
+            modern, scalable applications. With over 3 years of experience, I've
+            led and contributed to projects involving complex user workflows,
+            API integrations, and real-time systems.
+          </p>
 
-            <div className="professional-card p-8 rounded-xl">
-              <h3 className="text-2xl font-semibold text-white mb-4">
-                What I Do
-              </h3>
-              <div className="space-y-4">
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-secondary">
-                    Develop responsive web applications using Angular,
-                    TypeScript, and modern frameworks
-                  </p>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-secondary">
-                    Build robust backend systems with Node.js, Express, Nest.js,
-                    and various databases and ORMs
-                  </p>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-secondary">
-                    Create seamless user experiences with intuitive UI/UX design
-                    principles
-                  </p>
-                </div>
-                <div className="flex items-start space-x-3">
-                  <div className="w-2 h-2 bg-gradient-to-r from-blue-400 to-purple-600 rounded-full mt-2 flex-shrink-0"></div>
-                  <p className="text-secondary">
-                    Implement DevOps practices and cloud deployment strategies
-                  </p>
-                </div>
-              </div>
-            </div>
-          </motion.div>
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
+            What I Do Best
+          </h2>
+          <ul className="list-disc pl-6 text-white text-lg leading-relaxed space-y-2">
+            <li>
+              Building modern Angular applications with performance and
+              scalability in mind
+            </li>
+            <li>
+              Designing pixel-perfect, responsive layouts with Tailwind CSS and
+              Ionic
+            </li>
+            <li>
+              Writing clean, semantic code using TypeScript and modern
+              frameworks
+            </li>
+            <li>
+              Creating robust backend systems with Node.js, Express, and Nest.js
+            </li>
+            <li>
+              Implementing real-time features with WebSockets and state
+              management with NgRx and RxJS
+            </li>
+            <li>
+              Building data visualization dashboards with Ngx-Charts and
+              interactive UIs
+            </li>
+          </ul>
+        </motion.div>
 
-          {/* Personal Image */}
-          <motion.div
-            initial={{ opacity: 0, x: 50 }}
-            animate={isInView ? { opacity: 1, x: 0 } : {}}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="flex justify-center lg:justify-end"
-          >
-            <div className="relative">
-              <motion.div
-                animate={{ y: [0, -10, 0] }}
-                transition={{
-                  duration: 3,
-                  repeat: Infinity,
-                  ease: "easeInOut",
-                }}
-                className="w-80 h-80 rounded-full bg-gradient-to-br from-blue-400 to-purple-600 p-1"
-              >
-                <div className="w-full h-full rounded-full bg-white p-2">
-                  <div className="w-full h-full rounded-full bg-gray-200 flex items-center justify-center overflow-hidden">
-                    <img
-                      src="/assets/adedamola2.jpg"
-                      alt="Damola Akinyomi"
-                      className="w-full h-full rounded-full object-cover"
-                    />
-                  </div>
-                </div>
-              </motion.div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="about-text"
+        >
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">Currently</h2>
+          <p className="text-white text-lg leading-relaxed mb-4">
+            I'm currently working on projects that showcase my skills in
+            Angular, TypeScript, Node.js, and modern web technologies. I hold
+            certifications in Microsoft Azure Fundamentals, Azure Security &
+            Compliance, and Oracle Cloud Foundations.
+          </p>
+          <p className="text-white text-lg leading-relaxed mb-6">
+            <span className="text-nowrap font-extrabold text-yellow-500">
+              I'm also open to opportunities{" "}
+            </span>
+            where I can collaborate, learn, and grow as a developer, whether
+            that's freelance work, consulting, or full-time roles.
+          </p>
+        </motion.div>
 
-              {/* Floating elements */}
-              <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 20,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute -top-4 -right-4 w-8 h-8 bg-yellow-400 rounded-full"
-              />
-              <motion.div
-                animate={{
-                  rotate: -360,
-                }}
-                transition={{
-                  duration: 15,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute -bottom-4 -left-4 w-6 h-6 bg-green-400 rounded-full"
-              />
-              <motion.div
-                animate={{
-                  rotate: 360,
-                }}
-                transition={{
-                  duration: 25,
-                  repeat: Infinity,
-                  ease: "linear",
-                }}
-                className="absolute top-1/2 -right-8 w-4 h-4 bg-pink-400 rounded-full"
-              />
-            </div>
-          </motion.div>
-        </div>
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 1.4, duration: 0.8 }}
+          className="about-text"
+        >
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
+            Beyond Code
+          </h2>
+          <p className="text-white text-lg leading-relaxed mb-6">
+            When I'm not coding, I enjoy exploring new technologies, keeping up
+            with tech trends, and connecting with other developers. I'm a proud
+            graduate of the ALX Full-Stack Software Engineering Program (Cohort
+            22), which strengthened my discipline, resilience, and ability to
+            build end-to-end solutions under production-level standards.
+          </p>
+
+          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
+            Let's Connect
+          </h2>
+          <p className="text-white text-lg leading-relaxed">
+            I'd love to collaborate or chat about exciting opportunities. 👉
+            <a
+              className="text-yellow-400 mr-2 hover:text-yellow-300 transition-colors"
+              href="https://www.linkedin.com/in/adedamola-akinyomi"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Linkedin
+            </a>
+            |
+            <a
+              className="text-yellow-400 m-2 hover:text-yellow-300 transition-colors"
+              href="https://github.com/adedamolacoal"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Github
+            </a>
+            |
+            <a
+              className="text-yellow-400 m-2 hover:text-yellow-300 transition-colors"
+              href="mailto:adedamolacoal@gmail.com"
+              target="_blank"
+              aria-label="Email:adedamolacoal@gmail.com"
+              rel="noopener noreferrer"
+            >
+              Email
+            </a>
+          </p>
+        </motion.div>
       </div>
+
+      {/* Animated Cube Spinner */}
+      <motion.div
+        initial={{ opacity: 0, x: 50 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.6, duration: 0.8 }}
+        className="stage-cube grid items-center relative"
+      >
+        <div className="cubespinner absolute top-32">
+          <div className="face1">
+            <div className="angular-logo">
+              <span className="angular-text">A</span>
+            </div>
+          </div>
+          <div className="face2">
+            <div className="typescript-logo">
+              <span className="ts-text">TS</span>
+            </div>
+          </div>
+          <div className="face3">
+            <div className="node-logo">
+              <span className="node-text">Node</span>
+            </div>
+          </div>
+          <div className="face4">
+            <div className="ionic-logo">
+              <span className="ionic-text">Ionic</span>
+            </div>
+          </div>
+          <div className="face5">
+            <div className="ngrx-logo">
+              <span className="ngrx-text">NgRx</span>
+            </div>
+          </div>
+          <div className="face6">
+            <div className="docker-logo">
+              <span className="docker-text">Docker</span>
+            </div>
+          </div>
+          <div className="face7">
+            <div className="azure-logo">
+              <span className="azure-text">Azure</span>
+            </div>
+          </div>
+        </div>
+      </motion.div>
+
+      {/* HTML Comment Elements */}
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="text-yellow-400 fixed bottom-12 left-8 sm:left-28 font-Aurore"
+      >
+        &lt;/body&gt;
+      </motion.span>
+      <br />
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.7, duration: 0.8 }}
+        className="text-yellow-400 fixed bottom-5 sm:left-20 font-Aurore"
+      >
+        &lt;/html&gt;
+      </motion.span>
     </section>
   );
 };

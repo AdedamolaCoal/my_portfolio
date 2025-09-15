@@ -1,29 +1,24 @@
 import { motion } from "framer-motion";
-import { useInView } from "framer-motion";
-import { useRef, useState } from "react";
-import { ExternalLink, Github, Eye } from "lucide-react";
+import { useState } from "react";
+import { ExternalLink, Github, Star, Calendar, Code } from "lucide-react";
 import ProjectModal from "./ProjectModal";
-import AllProjectsModal from "./AllProjectsModal";
-
-interface Project {
-  title: string;
-  description: string;
-  technologies: string[];
-  image: string;
-  github: string;
-  live: string;
-  featured: boolean;
-  images: string[];
-}
 
 const Projects = () => {
-  const ref = useRef(null);
-  const isInView = useInView(ref, { once: true });
-  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
+  const [selectedProject, setSelectedProject] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [isAllProjectsModalOpen, setIsAllProjectsModalOpen] = useState(false);
+  const [filter, setFilter] = useState("all");
 
-  const projects: Array<Project> = [
+  const openModal = (project) => {
+    setSelectedProject(project);
+    setIsModalOpen(true);
+  };
+
+  const closeModal = () => {
+    setIsModalOpen(false);
+    setSelectedProject(null);
+  };
+
+  const projects = [
     {
       title: "Learning Management System",
       description:
@@ -39,7 +34,6 @@ const Projects = () => {
       image: "/assets/projects/prepstation/lms-1.png",
       github: "https://github.com/adedamolacoal",
       live: "https://prepstation-fe.vercel.app/",
-      featured: true,
       images: [
         "/assets/projects/prepstation/lms-1.png",
         "/assets/projects/prepstation/lms-2.png",
@@ -48,12 +42,11 @@ const Projects = () => {
     {
       title: "Enterprise Resource Planning System",
       description:
-        "A minimal enterprise resource planning system built with Angular on the frontend and handled by me. Features include a role based access control (RBAC) on the backend, which was used on the frontend to control the access to the different modules of the system, and further used to control the workflows of the system for the different roles.",
-      technologies: ["Angular", "RxJs", "Bootstrap", "SASS"],
+        "A minimal enterprise resource planning system built with Angular on the frontend and handled by me. Features include a role based access control (RBAC) on the backend.",
+      technologies: ["Angular", "RxJs", "Bootstrap", "SASS", "TypeScript"],
       image: "/assets/projects/asl/erp-1.png",
       github: "https://github.com/adedamolacoal",
       live: "https://asl-test.vercel.app",
-      featured: true,
       images: [
         "/assets/projects/asl/erp-1.png",
         "/assets/projects/asl/erp-2.png",
@@ -63,11 +56,10 @@ const Projects = () => {
       title: "Movies Trend",
       description:
         "A static movies website built with just HTML, CSS and JavaScript. It uses the TMDB API to fetch the movies data.",
-      technologies: ["JavaScript", "HTML", "CSS"],
+      technologies: ["JavaScript", "HTML", "CSS", "TMDB API"],
       image: "/assets/projects/mt/mt-1.png",
       github: "https://github.com/adedamolacoal/movies-trend",
       live: "https://movies-trend.vercel.app/",
-      featured: true,
       images: [
         "/assets/projects/mt/mt-1.png",
         "/assets/projects/mt/mt-2.png",
@@ -83,253 +75,305 @@ const Projects = () => {
       image: "/assets/projects/pw/pw-1.png",
       github: "https://github.com/AdedamolaCoal/my_portfolio",
       live: "https://adedamola-portfolio-ten.vercel.app",
-      featured: true,
       images: [
         "/assets/projects/pw/pw-1.png",
         "/assets/projects/pw/pw-2.png",
         "/assets/projects/pw/pw-3.png",
         "/assets/projects/pw/pw-4.png",
+        "/assets/projects/pw/pw-5.png",
+        "/assets/projects/pw/pw-6.png",
       ],
     },
   ];
 
-  const featuredProjects = projects.filter((project) => project.featured);
-  // const otherProjects = projects.filter((project) => !project.featured);
-
-  const openModal = (project: Project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
+  const getProjectType = (title: string) => {
+    if (
+      title.includes("Learning Management") ||
+      title.includes("Enterprise Resource")
+    ) {
+      return "enterprise";
+    } else if (title.includes("Movies")) {
+      return "frontend";
+    } else if (title.includes("Portfolio")) {
+      return "personal";
+    }
+    return "other";
   };
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-  };
-
-  const openAllProjectsModal = () => {
-    setIsAllProjectsModalOpen(true);
-  };
-
-  const closeAllProjectsModal = () => {
-    setIsAllProjectsModalOpen(false);
-  };
+  const filteredProjects = projects.filter((project) => {
+    if (filter === "all") return true;
+    return getProjectType(project.title) === filter;
+  });
 
   return (
-    <>
-      <section id="projects" className="py-20 relative">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <section
+      id="projects"
+      className="container pl-10 p-2 project-page px-4 pb-12 pt-4 sm:py-14"
+    >
+      {/* HTML Comment Elements */}
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="text-yellow-400 fixed sm:top-12 top-20 left-8 sm:left-28 font-Aurore -scroll-my-2.5"
+      >
+        &lt;body&gt;
+      </motion.span>
+
+      <div>
+        <motion.h1
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.2, duration: 0.8 }}
+          className="mb-12"
+        >
+          <span className="text-6xl sm:text-7xl font-bold text-glow">
+            <span className="string-animate-hover _15 text-yellow-400">P</span>
+            <span className="string-animate-hover _16 text-yellow-400">r</span>
+            <span className="string-animate-hover _17 text-yellow-400">o</span>
+            <span className="string-animate-hover _18 text-yellow-400">j</span>
+            <span className="string-animate-hover _19 text-yellow-400">e</span>
+            <span className="string-animate-hover _20 text-yellow-400">c</span>
+            <span className="string-animate-hover _21 text-yellow-400">t</span>
+            <span className="string-animate-hover _22 text-yellow-400">s</span>
+          </span>
+        </motion.h1>
+
+        {/* Project Stats */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4, duration: 0.8 }}
+          className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-6"
+        >
+          <div className="text-center p-4 bg-gradient-to-br from-yellow-400/10 to-orange-500/10 rounded-xl border border-yellow-400/20">
+            <div className="text-3xl font-bold text-yellow-400 mb-2">
+              {projects.length}
+            </div>
+            <div className="text-sm text-gray-300">Total Projects</div>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-blue-400/10 to-blue-500/10 rounded-xl border border-blue-400/20">
+            <div className="text-3xl font-bold text-blue-400 mb-2">4</div>
+            <div className="text-sm text-gray-300">Technologies</div>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-green-400/10 to-green-500/10 rounded-xl border border-green-400/20">
+            <div className="text-3xl font-bold text-green-400 mb-2">100%</div>
+            <div className="text-sm text-gray-300">Success Rate</div>
+          </div>
+          <div className="text-center p-4 bg-gradient-to-br from-purple-400/10 to-purple-500/10 rounded-xl border border-purple-400/20">
+            <div className="text-3xl font-bold text-purple-400 mb-2">∞</div>
+            <div className="text-sm text-gray-300">Creativity</div>
+          </div>
+        </motion.div>
+
+        {/* Filter Buttons */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="mb-8 flex flex-wrap gap-4 justify-center"
+        >
+          {[
+            { key: "all", label: "All Projects", count: projects.length },
+            {
+              key: "enterprise",
+              label: "Enterprise",
+              count: projects.filter(
+                (p) => getProjectType(p.title) === "enterprise"
+              ).length,
+            },
+            {
+              key: "frontend",
+              label: "Frontend",
+              count: projects.filter(
+                (p) => getProjectType(p.title) === "frontend"
+              ).length,
+            },
+            {
+              key: "personal",
+              label: "Personal",
+              count: projects.filter(
+                (p) => getProjectType(p.title) === "personal"
+              ).length,
+            },
+          ].map((filterOption) => (
+            <motion.button
+              key={filterOption.key}
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setFilter(filterOption.key)}
+              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
+                filter === filterOption.key
+                  ? "bg-yellow-400 text-black shadow-lg"
+                  : "bg-white/10 text-white hover:bg-white/20 border border-white/20"
+              }`}
+            >
+              {filterOption.label} ({filterOption.count})
+            </motion.button>
+          ))}
+        </motion.div>
+      </div>
+
+      <div className="card-container gap-8 w-full grid grid-cols-1 md:grid-cols-2 lg:pl-8 lg:grid-cols-3">
+        {filteredProjects.map((project, index) => (
           <motion.div
-            ref={ref}
+            key={project.title}
             initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ duration: 0.8 }}
-            className="text-center mb-16"
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.4 + index * 0.2, duration: 0.8 }}
+            whileHover={{ y: -10, scale: 1.02 }}
+            className="project-card cursor-pointer animate-card flex flex-col gap-2 bg-white shadow-lg hover:shadow-2xl mx-auto transition-all duration-300 rounded-lg overflow-hidden relative group"
+            onClick={() => openModal(project)}
           >
-            <h2 className="text-4xl font-bold text-white mb-4">My Projects</h2>
-            <p className="text-xl text-secondary max-w-3xl mx-auto">
-              Here are some of the projects I've worked on. Each one represents
-              a unique challenge and learning opportunity.
+            {/* Project Type Badge */}
+            <div className="absolute top-4 left-4 z-10">
+              <span
+                className={`px-3 py-1 text-xs font-medium rounded-full ${
+                  getProjectType(project.title) === "enterprise"
+                    ? "bg-blue-500 text-white"
+                    : getProjectType(project.title) === "frontend"
+                    ? "bg-green-500 text-white"
+                    : "bg-purple-500 text-white"
+                }`}
+              >
+                {getProjectType(project.title).charAt(0).toUpperCase() +
+                  getProjectType(project.title).slice(1)}
+              </span>
+            </div>
+
+            {/* Featured Badge */}
+            <div className="absolute top-4 right-4 z-10">
+              <Star className="w-5 h-5 text-yellow-400 fill-current" />
+            </div>
+
+            <div className="relative overflow-hidden">
+              <img
+                alt={project.title}
+                className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-300"
+                src={project.image}
+              />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 text-black font-medium">
+                  Click to view details
+                </div>
+              </div>
+            </div>
+
+            <div className="p-5 flex-1 flex flex-col">
+              <div className="flex items-start justify-between mb-3">
+                <h2 className="text-xl font-semibold text-black flex-1">
+                  {project.title}
+                </h2>
+                <div className="flex items-center text-yellow-500 text-sm">
+                  <Calendar className="w-4 h-4 mr-1" />
+                  <span>2024</span>
+                </div>
+              </div>
+
+              <p className="text-gray-600 mb-4 text-sm leading-relaxed flex-1">
+                {project.description}
+              </p>
+
+              <div className="flex flex-wrap gap-2 mb-4">
+                {project.technologies.slice(0, 3).map((tech) => (
+                  <motion.span
+                    key={tech}
+                    whileHover={{ scale: 1.05 }}
+                    className="bg-gray-100 text-gray-700 px-3 py-1 text-xs font-medium rounded-full border border-gray-200 hover:bg-gray-200 transition-colors"
+                  >
+                    {tech}
+                  </motion.span>
+                ))}
+                {project.technologies.length > 3 && (
+                  <span className="bg-gray-100 text-gray-500 px-3 py-1 text-xs font-medium rounded-full border border-gray-200">
+                    +{project.technologies.length - 3}
+                  </span>
+                )}
+              </div>
+
+              <div className="flex items-center justify-between mt-auto">
+                <div className="flex gap-4">
+                  <motion.a
+                    href={project.live}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <ExternalLink size={16} />
+                    Live
+                  </motion.a>
+                  <motion.a
+                    href={project.github}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                    className="flex items-center gap-2 text-gray-600 hover:text-gray-700 font-medium text-sm transition-colors"
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    <Github size={16} />
+                    Code
+                  </motion.a>
+                </div>
+                <div className="flex items-center text-gray-500 text-sm">
+                  <Code className="w-4 h-4 mr-1" />
+                  <span>{project.technologies.length} techs</span>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        ))}
+
+        {/* Empty State */}
+        {filteredProjects.length === 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="col-span-full text-center py-16"
+          >
+            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
+              <Code className="w-12 h-12 text-gray-400" />
+            </div>
+            <h3 className="text-2xl font-semibold text-gray-600 mb-4">
+              No projects found
+            </h3>
+            <p className="text-gray-500 mb-6">
+              Try selecting a different filter to see more projects.
             </p>
-          </motion.div>
-
-          {/* Featured Projects */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.2, duration: 0.8 }}
-            className="mb-16"
-          >
-            <h3 className="text-2xl font-semibold text-white mb-8 text-center">
-              Featured Projects
-            </h3>
-            <div className="grid lg:grid-cols-2 gap-8">
-              {featuredProjects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 0.4 + index * 0.2, duration: 0.8 }}
-                  whileHover={{ y: -10 }}
-                  className="professional-card rounded-xl overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
-                  onClick={() => openModal(project)}
-                >
-                  <div className="h-48 bg-gradient-to-br from-blue-400 to-purple-600 flex items-center justify-center relative group">
-                    <div className="text-white text-center">
-                      <div className="w-16 h-16 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <span className="text-2xl font-bold">
-                          {project.title.charAt(0)}
-                        </span>
-                      </div>
-                      <p className="text-sm opacity-80">Project Preview</p>
-                    </div>
-
-                    {/* Overlay with view button */}
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="flex items-center space-x-2 bg-white text-gray-900 px-4 py-2 rounded-lg"
-                      >
-                        <Eye size={20} />
-                        <span className="font-medium">View Project</span>
-                      </motion.div>
-                    </div>
-                  </div>
-                  <div className="p-6">
-                    <h4 className="text-xl font-semibold text-white mb-3">
-                      {project.title}
-                    </h4>
-                    <p className="text-secondary mb-4 leading-relaxed">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-2 mb-4">
-                      {project.technologies.map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-3 py-1 bg-white/10 text-primary text-sm rounded-full border border-white/20"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                    </div>
-                    <div className="flex space-x-4">
-                      <motion.a
-                        href={project.github}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center space-x-2 text-secondary hover:text-white transition-colors duration-200"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <Github size={16} />
-                        <span>Code</span>
-                      </motion.a>
-                      <motion.a
-                        href={project.live}
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        className="flex items-center space-x-2 text-secondary hover:text-white transition-colors duration-200"
-                        onClick={(e) => e.stopPropagation()}
-                      >
-                        <ExternalLink size={16} />
-                        <span>Live Demo</span>
-                      </motion.a>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Other Projects */}
-          {/* <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 0.8, duration: 0.8 }}
-          >
-            <h3 className="text-2xl font-semibold text-white mb-8 text-center">
-              More Projects
-            </h3>
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {otherProjects.map((project, index) => (
-                <motion.div
-                  key={project.title}
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : {}}
-                  transition={{ delay: 1 + index * 0.1, duration: 0.8 }}
-                  whileHover={{ y: -5 }}
-                  className="professional-card rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-300 cursor-pointer"
-                  onClick={() => openModal(project)}
-                >
-                  <div className="h-32 bg-gradient-to-br from-green-400 to-blue-600 flex items-center justify-center relative group">
-                    <div className="text-white text-center">
-                      <div className="w-12 h-12 bg-white/20 rounded-full flex items-center justify-center mx-auto mb-2">
-                        <span className="text-lg font-bold">
-                          {project.title.charAt(0)}
-                        </span>
-                      </div>
-                      <p className="text-xs opacity-80">Preview</p>
-                    </div>
-
-                    <div className="absolute inset-0 bg-black bg-opacity-50 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-                      <motion.div
-                        whileHover={{ scale: 1.1 }}
-                        className="flex items-center space-x-2 bg-white text-gray-900 px-3 py-1 rounded-lg text-sm"
-                      >
-                        <Eye size={16} />
-                        <span className="font-medium">View</span>
-                      </motion.div>
-                    </div>
-                  </div>
-                  <div className="p-4">
-                    <h4 className="text-lg font-semibold text-white mb-2">
-                      {project.title}
-                    </h4>
-                    <p className="text-secondary text-sm mb-3 line-clamp-3">
-                      {project.description}
-                    </p>
-                    <div className="flex flex-wrap gap-1 mb-3">
-                      {project.technologies.slice(0, 3).map((tech) => (
-                        <span
-                          key={tech}
-                          className="px-2 py-1 bg-white/10 text-primary text-xs rounded-full border border-white/20"
-                        >
-                          {tech}
-                        </span>
-                      ))}
-                      {project.technologies.length > 3 && (
-                        <span className="px-2 py-1 bg-white/10 text-secondary text-xs rounded-full border border-white/20">
-                          +{project.technologies.length - 3}
-                        </span>
-                      )}
-                    </div>
-                    <div className="flex justify-between items-center">
-                      <div className="flex space-x-3">
-                        <motion.a
-                          href={project.github}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="text-secondary hover:text-white transition-colors duration-200"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <Github size={16} />
-                        </motion.a>
-                        <motion.a
-                          href={project.live}
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                          className="text-secondary hover:text-white transition-colors duration-200"
-                          onClick={(e) => e.stopPropagation()}
-                        >
-                          <ExternalLink size={16} />
-                        </motion.a>
-                      </div>
-                      <motion.div whileHover={{ x: 5 }} className="text-white">
-                        <ArrowRight size={16} />
-                      </motion.div>
-                    </div>
-                  </div>
-                </motion.div>
-              ))}
-            </div>
-          </motion.div> */}
-
-          {/* CTA */}
-          <motion.div
-            initial={{ opacity: 0, y: 50 }}
-            animate={isInView ? { opacity: 1, y: 0 } : {}}
-            transition={{ delay: 1.5, duration: 0.8 }}
-            className="text-center mt-16"
-          >
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
-              onClick={openAllProjectsModal}
-              className="btn-primary px-8 py-3 rounded-lg font-semibold"
+              onClick={() => setFilter("all")}
+              className="px-6 py-3 bg-yellow-400 text-black font-medium rounded-lg hover:bg-yellow-500 transition-colors"
             >
-              View All Projects
+              Show All Projects
             </motion.button>
           </motion.div>
-        </div>
-      </section>
+        )}
+      </div>
+
+      {/* HTML Comment Elements */}
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.5, duration: 0.8 }}
+        className="text-yellow-400 fixed bottom-12 left-8 sm:left-28 font-Aurore"
+      >
+        &lt;/body&gt;
+      </motion.span>
+      <br />
+      <motion.span
+        initial={{ opacity: 0, x: -20 }}
+        animate={{ opacity: 1, x: 0 }}
+        transition={{ delay: 1.7, duration: 0.8 }}
+        className="text-yellow-400 fixed bottom-5 sm:left-20 font-Aurore"
+      >
+        &lt;/html&gt;
+      </motion.span>
 
       {/* Project Modal */}
       <ProjectModal
@@ -337,14 +381,7 @@ const Projects = () => {
         onClose={closeModal}
         project={selectedProject}
       />
-
-      {/* All Projects Modal */}
-      <AllProjectsModal
-        isOpen={isAllProjectsModalOpen}
-        onClose={closeAllProjectsModal}
-        projects={projects}
-      />
-    </>
+    </section>
   );
 };
 
