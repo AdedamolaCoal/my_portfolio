@@ -12,103 +12,99 @@ import {
   Instagram,
 } from "lucide-react";
 
-const Sidebar = () => {
-  const [activeSection, setActiveSection] = useState("home");
-  const navItems = [
-    { icon: Home, href: "#home", label: "Home" },
-    { icon: User, href: "#about", label: "About" },
-    { icon: Wrench, href: "#skills", label: "Skills" },
-    { icon: FolderOpen, href: "#projects", label: "Projects" },
-    { icon: Mail, href: "#contact", label: "Contact" },
-  ];
+const navItems = [
+  { icon: Home, href: "#home", label: "Home" },
+  { icon: User, href: "#about", label: "About" },
+  { icon: Wrench, href: "#skills", label: "Skills" },
+  { icon: FolderOpen, href: "#projects", label: "Projects" },
+  { icon: Mail, href: "#contact", label: "Contact" },
+];
 
-  const socialLinks = [
-    {
-      icon: Linkedin,
-      href: import.meta.env.VITE_LINKEDIN_URL,
-      label: "LinkedIn",
-    },
-    { icon: Github, href: import.meta.env.VITE_GITHUB_URL, label: "GitHub" },
-    { icon: Twitter, href: import.meta.env.VITE_TWITTER_URL, label: "Twitter" },
-    {
-      icon: Instagram,
-      href: import.meta.env.VITE_INSTAGRAM_URL,
-      label: "Instagram",
-    },
-  ];
+const socialLinks = [
+  {
+    icon: Linkedin,
+    href: import.meta.env.VITE_LINKEDIN_URL,
+    label: "LinkedIn",
+  },
+  { icon: Github, href: import.meta.env.VITE_GITHUB_URL, label: "GitHub" },
+  { icon: Twitter, href: import.meta.env.VITE_TWITTER_URL, label: "Twitter" },
+  {
+    icon: Instagram,
+    href: import.meta.env.VITE_INSTAGRAM_URL,
+    label: "Instagram",
+  },
+];
+
+const Sidebar = () => {
+  const [active, setActive] = useState("home");
 
   useEffect(() => {
-    const handleScroll = () => {
-      const sections = ["home", "about", "skills", "projects", "contact"];
-      const scrollPosition = window.scrollY + 100;
-
-      for (const section of sections) {
-        const element = document.getElementById(section);
-        if (element) {
-          const { offsetTop, offsetHeight } = element;
-          if (
-            scrollPosition >= offsetTop &&
-            scrollPosition < offsetTop + offsetHeight
-          ) {
-            setActiveSection(section);
-            break;
-          }
+    const ids = navItems.map((n) => n.href.replace("#", ""));
+    const onScroll = () => {
+      const pos = window.scrollY + 120;
+      for (const id of ids) {
+        const el = document.getElementById(id);
+        if (el && pos >= el.offsetTop && pos < el.offsetTop + el.offsetHeight) {
+          setActive(id);
+          break;
         }
       }
     };
-
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Check initial position
-
-    return () => window.removeEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", onScroll);
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const scrollToSection = (href: string) => {
-    const element = document.querySelector(href);
-    if (element) {
-      element.scrollIntoView({ behavior: "smooth" });
-    }
-  };
+  const scrollTo = (href: string) =>
+    document.querySelector(href)?.scrollIntoView({ behavior: "smooth" });
+
+  const iconStyle = (isActive: boolean): React.CSSProperties => ({
+    color: isActive ? "var(--accent)" : "var(--text-muted)",
+    transition: "color 0.2s",
+  });
 
   return (
     <>
-      {/* Desktop Sidebar */}
-      <section className="sidebar min-h-screen hidden sm:flex w-20 px-8 py-4 fixed left-0 top-0 bottom-0 bg-black items-center gap-16 flex-col">
-        {/* Logo */}
+      {/* ── Desktop sidebar ── */}
+      <aside className="sidebar fixed left-0 top-0 bottom-0 w-16 hidden sm:flex flex-col items-center py-8 z-40">
+        {/* Wordmark */}
         <a
           href="#home"
-          onClick={() => scrollToSection("#home")}
-          className="flex flex-col items-center"
+          onClick={() => scrollTo("#home")}
+          aria-label="Home"
+          className="font-mono text-sm font-bold mb-10 transition-colors duration-200"
+          style={{ color: "var(--accent)" }}
         >
-          <div className="text-yellow-400 text-2xl font-bold">D</div>
-          {/* <p className="text-white text-sm">Damola</p> */}
+          DA
         </a>
 
-        {/* Navigation */}
-        <nav className="flex-1 flex gap-8 flex-col">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.replace("#", "");
+        {/* Nav */}
+        <nav className="flex flex-col items-center gap-7 flex-1">
+          {navItems.map(({ icon: Icon, href, label }) => {
+            const isActive = active === href.replace("#", "");
             return (
               <motion.a
-                key={item.label}
-                whileHover={{ scale: 1.1 }}
+                key={label}
+                onClick={() => scrollTo(href)}
+                whileHover={{ scale: 1.15 }}
                 whileTap={{ scale: 0.9 }}
-                onClick={() => scrollToSection(item.href)}
-                className={`flex flex-col items-center transition-all duration-200 relative ${
-                  isActive
-                    ? "text-yellow-400"
-                    : "text-white hover:text-yellow-400"
-                }`}
-                aria-label={item.label}
+                title={label}
+                aria-label={label}
+                className="relative flex items-center justify-center cursor-pointer"
+                style={iconStyle(isActive)}
+                onMouseEnter={(e) => {
+                  if (!isActive) e.currentTarget.style.color = "var(--text-secondary)";
+                }}
+                onMouseLeave={(e) => {
+                  if (!isActive) e.currentTarget.style.color = "var(--text-muted)";
+                }}
               >
-                <item.icon size={24} />
+                <Icon size={18} />
                 {isActive && (
-                  <motion.div
-                    layoutId="activeIndicator"
-                    className="absolute -right-2 w-1 h-8 bg-yellow-400 rounded-full"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2 }}
+                  <motion.span
+                    layoutId="activePill"
+                    className="absolute -right-4 w-0.5 h-6 rounded-full"
+                    style={{ background: "var(--accent)" }}
                   />
                 )}
               </motion.a>
@@ -116,68 +112,56 @@ const Sidebar = () => {
           })}
         </nav>
 
-        {/* Social Links */}
-        <ul className="list-none flex flex-1 flex-col gap-6">
-          {socialLinks.map((social) => (
-            <li key={social.label}>
-              <motion.a
-                href={social.href}
+        {/* Socials */}
+        <ul className="flex flex-col items-center gap-5">
+          {socialLinks.map(({ icon: Icon, href, label }) => (
+            <li key={label}>
+              <a
+                href={href}
                 target="_blank"
                 rel="noopener noreferrer"
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                className="text-white hover:text-yellow-400 transition-colors duration-200"
-                aria-label={social.label}
+                aria-label={label}
+                className="transition-colors duration-200"
+                style={{ color: "var(--text-muted)" }}
+                onMouseEnter={(e) => (e.currentTarget.style.color = "var(--accent)")}
+                onMouseLeave={(e) => (e.currentTarget.style.color = "var(--text-muted)")}
               >
-                <social.icon size={20} />
-              </motion.a>
+                <Icon size={15} />
+              </a>
             </li>
           ))}
+          <li>
+            <span
+              className="block w-px h-8 mt-1"
+              style={{ background: "var(--border-subtle)" }}
+            />
+          </li>
         </ul>
-      </section>
+      </aside>
 
-      {/* Mobile Navigation */}
-      <section className="mobile-nav sm:hidden flex gap-3 items-center justify-between p-4 w-full bg-black">
-        <a
-          href="#home"
-          onClick={() => scrollToSection("#home")}
-          className="flex items-center gap-2"
-        >
-          <div className="text-yellow-400 text-xl font-bold">D</div>
-          {/* <p className="text-white text-xs">Damola</p> */}
-        </a>
-
-        <nav className="flex-1 flex gap-2 justify-between items-center p-1">
-          {navItems.map((item) => {
-            const isActive = activeSection === item.href.replace("#", "");
-            return (
-              <motion.a
-                key={item.label}
-                whileHover={{ scale: 1.1 }}
-                whileTap={{ scale: 0.9 }}
-                onClick={() => scrollToSection(item.href)}
-                className={`flex flex-col items-center transition-all duration-200 relative ${
-                  isActive
-                    ? "text-yellow-400"
-                    : "text-white hover:text-yellow-400"
-                }`}
-                aria-label={item.label}
-              >
-                <item.icon size={20} />
-                {isActive && (
-                  <motion.div
-                    layoutId="mobileActiveIndicator"
-                    className="absolute -bottom-1 w-6 h-1 bg-yellow-400 rounded-full"
-                    initial={{ opacity: 0, scale: 0 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    transition={{ duration: 0.2 }}
-                  />
-                )}
-              </motion.a>
-            );
-          })}
-        </nav>
-      </section>
+      {/* ── Mobile bottom nav ── */}
+      <nav className="mobile-nav sm:hidden fixed bottom-0 left-0 right-0 flex items-center justify-around py-3 px-4 z-40 backdrop-blur-sm">
+        {navItems.map(({ icon: Icon, href, label }) => {
+          const isActive = active === href.replace("#", "");
+          return (
+            <a
+              key={label}
+              onClick={() => scrollTo(href)}
+              aria-label={label}
+              className="relative flex flex-col items-center cursor-pointer transition-colors duration-200"
+              style={iconStyle(isActive)}
+            >
+              <Icon size={18} />
+              {isActive && (
+                <span
+                  className="absolute -bottom-1.5 w-1 h-1 rounded-full"
+                  style={{ background: "var(--accent)" }}
+                />
+              )}
+            </a>
+          );
+        })}
+      </nav>
     </>
   );
 };

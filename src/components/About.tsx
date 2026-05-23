@@ -1,301 +1,332 @@
-import { motion } from "framer-motion";
+import { motion, type Variants } from "framer-motion";
+
+const experience = [
+  {
+    company: "The Oh-Res Ltd",
+    role: "Senior Full-Stack Engineer & DevOps",
+    period: "Oct 2025 — Mar 2026",
+    location: "Canada (Remote)",
+    tech: [
+      "NestJS",
+      "Angular 20",
+      "AWS ECS/RDS",
+      "RabbitMQ",
+      "Docker",
+      "LangChain",
+      "pgvector",
+    ],
+  },
+  {
+    company: "Multilent LTD",
+    role: "Senior Frontend Engineer",
+    period: "Oct — Nov 2025",
+    location: "Remote",
+    tech: ["Angular 20", "Standalone Components", "Tailwind CSS", "RxJS"],
+  },
+  {
+    company: "Bastion Health",
+    role: "Backend Engineer",
+    period: "Jun — Sept 2025",
+    location: "Oyo, NG",
+    tech: [
+      "Node.js",
+      "Express.js",
+      "PrismaORM",
+      "PostgreSQL",
+      "Docker",
+      "Nginx",
+    ],
+  },
+  {
+    company: "Technocrat IT",
+    role: "Frontend Engineer",
+    period: "Sept 2023 — Sept 2025",
+    location: "Birmingham, UK (Remote)",
+    tech: ["Angular 14–17", "RxJS", "WebSockets", "Jest", "Jira"],
+  },
+  {
+    company: "Freelance",
+    role: "Frontend Engineer (Ionic)",
+    period: "May — Aug 2024",
+    location: "Remote",
+    tech: ["Ionic 8", "OAuth 2.0", "REST APIs"],
+  },
+  {
+    company: "Thrively",
+    role: "Ionic Mobile & Web Developer",
+    period: "Oct 2023 — Jan 2024",
+    location: "Remote",
+    tech: ["Ionic 6", "Angular 16", "Vue 3", "Capacitor", "Pinia"],
+  },
+  {
+    company: "ASL E-Admin",
+    role: "Frontend Engineer",
+    period: "Jul 2022 — Aug 2023",
+    location: "Lagos, NG",
+    tech: ["Angular 12–15", "Bootstrap", "HTTP Interceptors", "RxJS"],
+  },
+  {
+    company: "Osmium LTD",
+    role: "Frontend Engineer",
+    period: "Nov 2019 — May 2022",
+    location: "Remote",
+    tech: ["Angular 10–12", "Angular Material", "WebSockets", "Vue 2"],
+  },
+];
+
+const certifications = [
+  "ALX Full-Stack Software Engineering",
+  "Microsoft Azure Fundamentals (AZ-900)",
+  "Azure Security, Compliance & Identity (SC-900)",
+  "Oracle Cloud Foundations Associate",
+  "Kibo School of Technology — Future Proof with Python",
+];
+
+const highlights = [
+  { label: "Multi-tenant ERP", sub: "8 microservices, AWS ECS" },
+  { label: "AI / RAG pipeline", sub: "LangChain, GPT-4o, pgvector" },
+  { label: "Healthcare backend", sub: "Node.js, PrismaORM, WebSockets" },
+  { label: "Cross-platform mobile", sub: "Ionic + Capacitor, biometrics" },
+];
 
 const About = () => {
+  const sectionAnim: Variants = {
+    hidden: { opacity: 0, y: 32 },
+    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
+  };
+
+  const sectionAnimDelayed: Variants = {
+    hidden: { opacity: 0, y: 32 },
+    show: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.7, ease: "easeOut", delay: 0.2 },
+    },
+  };
+
   return (
     <section
       id="about"
-      className="about-page container pl-10 sm:pt-12 pt-8 p-4 flex flex-col lg:flex-row items-center justify-around gap-10 mb-20"
+      className="about-section"
     >
-      {/* HTML Comment Elements */}
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="text-yellow-400 fixed sm:top-12 top-20 left-8 sm:left-28 font-Aurore -scroll-my-2.5"
-      >
-        &lt;body&gt;
-      </motion.span>
-
-      <div className="text-zone lg:w-2/3">
-        {/* Header Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-12"
-        >
-          <h1 className="text-6xl sm:text-7xl font-bold text-glow mb-6">
-            <span className="string-animate-hover _18 text-yellow-400">A</span>
-            <span className="string-animate-hover _19 text-yellow-400">b</span>
-            <span className="string-animate-hover _20 text-yellow-400">o</span>
-            <span className="string-animate-hover _21 text-yellow-400">u</span>
-            <span className="string-animate-hover _22 text-yellow-400">t</span>
-            <span className="string-animate-hover _23 text-yellow-400"> </span>
-            <span className="string-animate-hover _24 text-yellow-400">M</span>
-            <span className="string-animate-hover _25 text-yellow-400">e</span>
-          </h1>
-
-          {/* About Stats */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4, duration: 0.8 }}
-            className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8"
-          >
-            <div className="text-center p-4 bg-gradient-to-br from-yellow-400/10 to-orange-500/10 rounded-xl border border-yellow-400/20">
-              <div className="text-2xl font-bold text-yellow-400 mb-1">3+</div>
-              <div className="text-sm text-gray-300">Years Experience</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-blue-400/10 to-blue-500/10 rounded-xl border border-blue-400/20">
-              <div className="text-2xl font-bold text-blue-400 mb-1">25+</div>
-              <div className="text-sm text-gray-300">Technologies</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-green-400/10 to-green-500/10 rounded-xl border border-green-400/20">
-              <div className="text-2xl font-bold text-green-400 mb-1">4</div>
-              <div className="text-sm text-gray-300">Certifications</div>
-            </div>
-            <div className="text-center p-4 bg-gradient-to-br from-purple-400/10 to-purple-500/10 rounded-xl border border-purple-400/20">
-              <div className="text-2xl font-bold text-purple-400 mb-1">∞</div>
-              <div className="text-sm text-gray-300">Passion</div>
-            </div>
-          </motion.div>
-
-          {/* Quick Intro */}
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.6, duration: 0.8 }}
-            className="bg-gradient-to-br from-white/5 to-white/10 backdrop-blur-sm rounded-2xl p-6 border border-white/10 shadow-2xl mb-8"
-          >
-            <div className="flex items-center space-x-4 mb-4">
-              <div className="w-16 h-16 bg-gradient-to-br from-yellow-400 to-orange-500 rounded-full flex items-center justify-center shadow-lg">
-                <span className="text-2xl font-bold text-white">A</span>
-              </div>
-              <div>
-                <h2 className="text-2xl font-bold text-white">
-                  Adedamola Akinyomi
-                </h2>
-                <p className="text-yellow-400 text-lg font-medium">
-                  Full Stack Developer
-                </p>
-              </div>
-            </div>
-            <p className="text-gray-300 text-lg leading-relaxed">
-              Passionate about creating exceptional digital experiences through
-              clean code, innovative solutions, and user-centered design.
-              Specializing in Node.js, Angular, Ionic, TypeScript, and modern
-              web technologies.
-            </p>
-          </motion.div>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.8, duration: 0.8 }}
-          className="about-text"
-        >
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
-            Short Intro
-          </h2>
-          <p className="text-white text-lg leading-relaxed mb-6">
-            Hi, I'm Damola Akinyomi, a passionate Full-Stack Developer focused
-            on building clean, interactive, and user-friendly web experiences
-            across healthcare, edutech, fintech, and enterprise sectors. I am a
-            graduate of the ALX Full-Stack Software Engineering Program (Cohort
-            22), which strengthened my discipline, resilience, and ability to
-            build end-to-end solutions under production-level standards. I also
-            hold certifications in Microsoft Azure Fundamentals, Azure Security
-            & Compliance, and Oracle Cloud Foundations.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.0, duration: 0.8 }}
-          className="about-text"
-        >
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
-            My Journey
-          </h2>
-          <p className="text-white text-lg leading-relaxed mb-6">
-            I started my journey into web development with curiosity about how
-            websites worked, and it has grown into a passion for creating
-            modern, scalable applications. With over 3 years of experience, I've
-            led and contributed to projects involving complex user workflows,
-            API integrations, and real-time systems.
-          </p>
-
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
-            What I Do Best
-          </h2>
-          <ul className="list-disc pl-6 text-white text-lg leading-relaxed space-y-2">
-            <li>
-              Building modern Angular applications with performance and
-              scalability in mind
-            </li>
-            <li>
-              Designing pixel-perfect, responsive layouts with Tailwind CSS and
-              Ionic
-            </li>
-            <li>
-              Writing clean, semantic code using TypeScript and modern
-              frameworks
-            </li>
-            <li>
-              Creating robust backend systems with Node.js, Express, and Nest.js
-            </li>
-            <li>
-              Implementing real-time features with WebSockets and state
-              management with NgRx and RxJS
-            </li>
-            <li>
-              Building data visualization dashboards with Ngx-Charts and
-              interactive UIs
-            </li>
-          </ul>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.2, duration: 0.8 }}
-          className="about-text"
-        >
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">Currently</h2>
-          <p className="text-white text-lg leading-relaxed mb-4">
-            I'm currently working on projects that showcase my skills in
-            Angular, TypeScript, Node.js, and modern web technologies. I hold
-            certifications in Microsoft Azure Fundamentals, Azure Security &
-            Compliance, and Oracle Cloud Foundations.
-          </p>
-          <p className="text-white text-lg leading-relaxed mb-6">
-            <span className="text-nowrap font-extrabold text-yellow-500">
-              I'm also open to opportunities{" "}
-            </span>
-            where I can collaborate, learn, and grow as a developer, whether
-            that's freelance work, consulting, or full-time roles.
-          </p>
-        </motion.div>
-
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 1.4, duration: 0.8 }}
-          className="about-text"
-        >
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
-            Beyond Code
-          </h2>
-          <p className="text-white text-lg leading-relaxed mb-6">
-            When I'm not coding, I enjoy exploring new technologies, keeping up
-            with tech trends, and connecting with other developers. I'm a proud
-            graduate of the ALX Full-Stack Software Engineering Program (Cohort
-            22), which strengthened my discipline, resilience, and ability to
-            build end-to-end solutions under production-level standards.
-          </p>
-
-          <h2 className="text-yellow-400 text-2xl mb-4 font-bold">
-            Let's Connect
-          </h2>
-          <p className="text-white text-lg leading-relaxed">
-            I'd love to collaborate or chat about exciting opportunities. 👉
-            <a
-              className="text-yellow-400 mr-2 hover:text-yellow-300 transition-colors"
-              href="https://www.linkedin.com/in/adedamola-akinyomi"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Linkedin
-            </a>
-            |
-            <a
-              className="text-yellow-400 m-2 hover:text-yellow-300 transition-colors"
-              href="https://github.com/adedamolacoal"
-              target="_blank"
-              rel="noopener noreferrer"
-            >
-              Github
-            </a>
-            |
-            <a
-              className="text-yellow-400 m-2 hover:text-yellow-300 transition-colors"
-              href="mailto:adedamolacoal@gmail.com"
-              target="_blank"
-              aria-label="Email:adedamolacoal@gmail.com"
-              rel="noopener noreferrer"
-            >
-              Email
-            </a>
-          </p>
-        </motion.div>
-      </div>
-
-      {/* Animated Cube Spinner */}
+      <div className="max-w-6xl mx-auto pl-10 sm:pl-16 pr-6 py-24">
+      {/* Section label */}
       <motion.div
-        initial={{ opacity: 0, x: 50 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.6, duration: 0.8 }}
-        className="stage-cube grid items-center relative"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center gap-4 mb-12"
       >
-        <div className="cubespinner absolute top-32">
-          <div className="face1">
-            <div className="angular-logo">
-              <span className="angular-text">A</span>
-            </div>
-          </div>
-          <div className="face2">
-            <div className="typescript-logo">
-              <span className="ts-text">TS</span>
-            </div>
-          </div>
-          <div className="face3">
-            <div className="node-logo">
-              <span className="node-text">Node</span>
-            </div>
-          </div>
-          <div className="face4">
-            <div className="ionic-logo">
-              <span className="ionic-text">Ionic</span>
-            </div>
-          </div>
-          <div className="face5">
-            <div className="ngrx-logo">
-              <span className="ngrx-text">NgRx</span>
-            </div>
-          </div>
-          <div className="face6">
-            <div className="docker-logo">
-              <span className="docker-text">Docker</span>
-            </div>
-          </div>
-          <div className="face7">
-            <div className="azure-logo">
-              <span className="azure-text">Azure</span>
-            </div>
-          </div>
-        </div>
+        <span
+          className="font-mono text-xs uppercase tracking-[0.25em]"
+          style={{ color: "var(--accent)" }}
+        >
+          01 / About
+        </span>
+        <span
+          className="flex-1 h-px max-w-xs"
+          style={{ background: "var(--border-subtle)" }}
+        />
       </motion.div>
 
-      {/* HTML Comment Elements */}
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="text-yellow-400 fixed bottom-12 left-8 sm:left-28 font-Aurore"
-      >
-        &lt;/body&gt;
-      </motion.span>
-      <br />
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.7, duration: 0.8 }}
-        className="text-yellow-400 fixed bottom-5 sm:left-20 font-Aurore"
-      >
-        &lt;/html&gt;
-      </motion.span>
+      <div className="grid lg:grid-cols-2 gap-16 max-w-5xl">
+        {/* ── Left: bio ── */}
+        <motion.div variants={sectionAnim} initial="hidden" animate="show">
+          <h2
+            className="text-4xl sm:text-5xl font-bold mb-6 leading-tight"
+            style={{ color: "var(--text-primary)" }}
+          >
+            Building products
+            <br />
+            <span style={{ color: "var(--accent)" }}>people rely on</span>
+          </h2>
+
+          <div
+            className="space-y-4 text-base leading-relaxed"
+            style={{ color: "var(--text-secondary)" }}
+          >
+            <p>
+              I'm Damola Akinyomi — a Senior Full-Stack Engineer with 6+ years
+              delivering production-grade applications across healthcare,
+              fintech, edtech, and enterprise.
+            </p>
+            <p>
+              My core is Angular and TypeScript, backed by deep NestJS and
+              Node.js expertise and hands-on AWS and DevOps experience. I've
+              shipped everything from 8-microservice ERP platforms to AI-powered
+              RAG pipelines and biometric mobile apps.
+            </p>
+            <p>
+              Most recently I led full-stack architecture for a multi-tenant
+              enterprise ERP — API Gateway over 8 services, 200+ RBAC
+              permissions, an LLM assistant grounded in live company data, and
+              AWS infrastructure built from scratch.
+            </p>
+          </div>
+
+          {/* Highlight grid */}
+          <div className="mt-8 grid grid-cols-2 gap-2">
+            {highlights.map(({ label, sub }) => (
+              <div
+                key={label}
+                className="px-4 py-3"
+                style={{
+                  border: "1px solid var(--border-subtle)",
+                  background: "var(--bg-raised)",
+                }}
+              >
+                <p
+                  className="text-sm font-semibold mb-0.5"
+                  style={{ color: "var(--text-primary)" }}
+                >
+                  {label}
+                </p>
+                <p className="font-mono text-xs" style={{ color: "var(--text-muted)" }}>
+                  {sub}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Certifications */}
+          <div className="mt-10">
+            <h3
+              className="font-mono text-xs uppercase tracking-widest mb-4"
+              style={{ color: "var(--accent)" }}
+            >
+              Certifications
+            </h3>
+            <ul className="space-y-2">
+              {certifications.map((cert) => (
+                <li
+                  key={cert}
+                  className="flex items-start gap-3 text-sm"
+                  style={{ color: "var(--text-secondary)" }}
+                >
+                  <span className="mt-1 shrink-0" style={{ color: "var(--accent)" }}>
+                    —
+                  </span>
+                  {cert}
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Links */}
+          <div className="flex gap-5 mt-10">
+            {[
+              {
+                label: "LinkedIn ↗",
+                href: "https://www.linkedin.com/in/adedamola-akinyomi",
+                external: true,
+              },
+              {
+                label: "GitHub ↗",
+                href: "https://github.com/adedamolacoal",
+                external: true,
+              },
+              {
+                label: "Email ↗",
+                href: "mailto:dammy0075@gmail.com",
+                external: false,
+              },
+            ].map(({ label, href, external }) => (
+              <a
+                key={label}
+                href={href}
+                target={external ? "_blank" : undefined}
+                rel={external ? "noopener noreferrer" : undefined}
+                className="text-sm font-mono pb-0.5 transition-colors duration-200"
+                style={{
+                  color: "var(--accent)",
+                  borderBottom: "1px solid var(--accent-dim)",
+                }}
+                onMouseEnter={(e) =>
+                  (e.currentTarget.style.borderBottomColor = "var(--accent)")
+                }
+                onMouseLeave={(e) =>
+                  (e.currentTarget.style.borderBottomColor = "var(--accent-dim)")
+                }
+              >
+                {label}
+              </a>
+            ))}
+          </div>
+        </motion.div>
+
+        {/* ── Right: timeline ── */}
+        <motion.div
+          variants={sectionAnimDelayed}
+          initial="hidden"
+          animate="show"
+        >
+          <h3
+            className="font-mono text-xs uppercase tracking-widest mb-8"
+            style={{ color: "#f59e0b" }}
+          >
+            Experience
+          </h3>
+          <ol
+            className="relative space-y-0"
+            style={{ borderLeft: "1px solid var(--border-subtle)" }}
+          >
+            {experience.map((exp, i) => (
+              <motion.li
+                key={`${exp.company}-${i}`}
+                initial={{ opacity: 0, x: -16 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.3 + i * 0.07, duration: 0.45 }}
+                className="relative pl-7 pb-7 last:pb-0"
+              >
+                {/* Timeline dot */}
+                <span
+                  className="absolute -left-[5px] top-1.5 w-2.5 h-2.5 rounded-full"
+                  style={{ border: "2px solid var(--accent)", background: "var(--bg-base)" }}
+                />
+
+                <div className="flex flex-wrap items-baseline justify-between gap-2 mb-0.5">
+                  <span
+                    className="text-sm font-semibold"
+                    style={{ color: "var(--text-primary)" }}
+                  >
+                    {exp.company}
+                  </span>
+                  <span
+                    className="font-mono text-xs"
+                    style={{ color: "var(--text-muted)" }}
+                  >
+                    {exp.period}
+                  </span>
+                </div>
+                <p className="text-xs mb-0.5" style={{ color: "var(--accent)" }}>
+                  {exp.role}
+                </p>
+                <p
+                  className="font-mono text-xs mb-2"
+                  style={{ color: "var(--text-muted)" }}
+                >
+                  {exp.location}
+                </p>
+                <div className="flex flex-wrap gap-1.5">
+                  {exp.tech.map((t) => (
+                    <span
+                      key={t}
+                      className="text-xs font-mono px-2 py-0.5"
+                      style={{
+                        color: "var(--text-muted)",
+                        border: "1px solid var(--border-subtle)",
+                      }}
+                    >
+                      {t}
+                    </span>
+                  ))}
+                </div>
+              </motion.li>
+            ))}
+          </ol>
+        </motion.div>
+      </div>
+    </div>
     </section>
   );
 };

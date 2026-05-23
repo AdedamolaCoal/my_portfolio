@@ -1,144 +1,134 @@
-# Adedamola's Portfolio
+# Portfolio Redesign — Drop-in Guide
 
-A modern, responsive portfolio website built with React, TypeScript, and Framer Motion. Features smooth animations, professional design, and excellent user experience.
+## What changed and why
 
-## 🚀 Features
+The old template had letter-by-letter animated titles, floating blur orbs on every section,
+`<html>/<body>` decorative tags, and identical visual weight across every component.
+Recruiters (and hiring managers) read dozens of portfolios — the goal here is to look senior,
+not clever.
 
-- **Modern Design**: Clean, professional layout with beautiful gradients and animations
-- **Responsive**: Fully responsive design that works on all devices
-- **Smooth Animations**: Powered by Framer Motion for engaging user interactions
-- **TypeScript**: Type-safe code for better development experience
-- **Tailwind CSS**: Utility-first CSS framework for rapid styling
-- **Performance Optimized**: Fast loading times and smooth scrolling
+The new design is: **editorial dark**, strong typographic hierarchy, yellow as the sole accent,
+mono font for labels/metadata, and generous whitespace. Think senior engineer meets design consultancy.
 
-## 🛠️ Tech Stack
+---
 
-- **Frontend**: React 19, TypeScript
-- **Styling**: Tailwind CSS
-- **Animations**: Framer Motion
-- **Icons**: Lucide React
-- **Build Tool**: Vite
+## Files in this folder
 
-## 📦 Installation
+| File           | Replaces                               |
+| -------------- | -------------------------------------- |
+| `Hero.tsx`     | `Hero.tsx`                             |
+| `About.tsx`    | `About.tsx`                            |
+| `Skills.tsx`   | `Skills.tsx`                           |
+| `Projects.tsx` | `Projects.tsx`                         |
+| `Contact.tsx`  | `Contact.tsx`                          |
+| `Header.tsx`   | `Header.tsx`                           |
+| `Sidebar.tsx`  | `Sidebar.tsx`                          |
+| `Footer.tsx`   | `Footer.tsx`                           |
+| `globals.css`  | Merge into `index.css` or `global.css` |
 
-1. Clone the repository:
+`AllProjectsModal.tsx` and `ProjectModal.tsx` are unchanged — they work fine as-is.
 
-```bash
-git clone https://github.com/AdedamolaCoal/my_portfolio.git
-cd my-portfolio
-```
+---
 
-2. Install dependencies:
+## Setup steps
 
-```bash
-npm install
-```
+### 1. Install fonts
 
-3. Start the development server:
+In `globals.css` the `@import` pulls **Syne** (display) and **JetBrains Mono** (code labels).
+If you use a `<link>` in `index.html` instead, add:
 
-```bash
-npm run dev
-```
-
-4. Open [http://localhost:5173](http://localhost:5173) to view it in the browser.
-
-## 🎨 Customization
-
-### Personal Information
-
-Update your personal information in the following components:
-
-#### 1. Header (`src/components/Header.tsx`)
-
-- Change the name "Adedamola" to your name
-- Update navigation links if needed
-
-#### 2. Hero Section (`src/components/Hero.tsx`)
-
-- Update the name and title
-- Modify the description text
-- Add your actual social media links
-- Replace the placeholder profile image with your photo
-
-#### 3. About Section (`src/components/About.tsx`)
-
-- Update the experience years and stats
-- Modify the about text to reflect your background
-- Update the skills list with your technologies
-
-#### 4. Projects Section (`src/components/Projects.tsx`)
-
-- Replace the sample projects with your actual projects
-- Update project descriptions, technologies, and links
-- Add real GitHub and live demo links
-
-#### 5. Contact Section (`src/components/Contact.tsx`)
-
-- Update email, phone, and location information
-- Add your actual social media links
-- Configure the contact form to work with your backend
-
-#### 6. Footer (`src/components/Footer.tsx`)
-
-- Update contact information
-- Add your actual social media links
-
-### Profile Image
-
-To add your profile image:
-
-1. Place your image in the `src/assets/` directory
-2. Import it in the Hero component:
-
-```tsx
-import profileImage from "../assets/your-image.jpg";
-```
-
-3. Replace the placeholder div with:
-
-```tsx
-<img
-  src={profileImage}
-  alt="Your Name"
-  className="w-full h-full rounded-full object-cover"
+```html
+<link
+  href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;700;800&family=JetBrains+Mono:wght@300;400;500&display=swap"
+  rel="stylesheet"
 />
 ```
 
-### Color Scheme
+### 2. Update `tailwind.config.js`
 
-The portfolio uses a blue-purple gradient theme. To change colors:
+Add the fonts so Tailwind's `font-mono` class maps correctly:
 
-1. Update the gradient classes in components (e.g., `from-blue-600 to-purple-600`)
-2. Modify the primary color classes (`bg-blue-600`, `text-blue-600`, etc.)
-3. Update the background gradients in the Hero section
+````js
+theme: {
+  extend: {
+    # Adedamola Akinyomi — Portfolio
 
-### Animations
+    A production-ready personal portfolio and showcase site built with React, TypeScript, Tailwind CSS and Vite. The site demonstrates professional UI, responsive layouts, and smooth animations powered by Framer Motion.
 
-The portfolio uses Framer Motion for animations. You can:
+    ## Key Highlights
 
-1. Adjust animation durations and delays in the `transition` props
-2. Modify animation types (fade, slide, scale, etc.)
-3. Add new animations by importing from Framer Motion
+    - Clean, accessible, responsive UI optimized for desktop and mobile
+    - TypeScript throughout for improved maintainability
+    - Fast development and build workflow using Vite
+    - Ready-made components for Hero, About, Projects, Skills, Contact
 
-## 📱 Responsive Design
+    ## Tech Stack
 
-The portfolio is fully responsive and includes:
+    - React 19 + TypeScript
+    - Vite (build tool)
+    - Tailwind CSS (utility-first styling)
+    - Framer Motion (animations)
+    - Lucide React (icons)
 
-- Mobile-first design approach
-- Responsive navigation with hamburger menu
-- Adaptive grid layouts
-- Touch-friendly interactions
+    ## Quick Start
 
-## 📄 License
+    Clone and run locally:
 
-This project is open source and available under the [MIT License](LICENSE).
+    ```bash
+    git clone https://github.com/AdedamolaCoal/my_portfolio.git
+    cd my-portfolio
+    npm install
+    npm run dev
+    ```
 
-## 🤝 Contributing
+    Open http://localhost:5173 in your browser.
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+    Build for production:
 
-## 📞 Contact
+    ```bash
+    npm run build
+    npm run preview  # serve the production build locally
+    ```
 
-If you have any questions or need help customizing the portfolio, feel free to reach out!
+    ## Project Structure
 
-**Note**: Remember to replace all placeholder content (email, phone, social links, projects) with your actual information before deploying.
+    - `src/` — application source
+      - `components/` — UI components (Hero, About, Projects, Contact, etc.)
+      - `assets/` — static images and media
+      - `main.tsx`, `App.tsx` — app entry and layout
+    - `public/` — static public assets
+    - `package.json` — scripts and dependencies
+
+    ## Customization
+
+    To personalize the site, update the following files:
+
+    - `src/components/Hero.tsx` — headline, description, CTAs, and socials
+    - `src/components/About.tsx` — bio, experience, certifications
+    - `src/components/Projects.tsx` — project items and links (public/assets/projects)
+    - `src/components/Contact.tsx` — contact form and contact details
+
+    Replace placeholder images in `src/assets/` and update links and text content as needed.
+
+    ## Development Notes
+
+    - The header and sidebar navigation use hash anchors (e.g. `#home`, `#about`) and smooth scrolling.
+    - Framer Motion `Variants` are used for entrance animations; if TypeScript reports easing issues, annotate variant objects with `Variants` from `framer-motion`.
+
+    ## Contributing
+
+    Contributions are welcome. Open an issue or send a pull request with clear change descriptions.
+
+    ## License
+
+    MIT
+
+    ---
+    If you'd like, I can also:
+
+    - Add a short deploy section with Vercel/Netlify steps
+    - Generate a simple contributing guide or code of conduct
+    - Update `package.json` scripts or add helpful developer scripts
+
+    Tell me which of the above you'd like next.
+````

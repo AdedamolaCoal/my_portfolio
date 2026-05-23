@@ -1,13 +1,12 @@
 // CV Download utility functions
 
 export const downloadCV = () => {
-  // Method 1: Direct file download (if CV is in public folder)
-  const cvUrl = "/assets/adedamola_cv.pdf";
+  const cvUrl = "/assets/adedamolas_cv.pdf";
 
   // Create a temporary link element
   const link = document.createElement("a");
   link.href = cvUrl;
-  link.download = "adedamola_cv.pdf";
+  link.download = "adedamolas_cv.pdf";
   link.target = "_blank";
 
   // Append to body, click, and remove

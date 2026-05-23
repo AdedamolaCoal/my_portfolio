@@ -1,386 +1,601 @@
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import { useState } from "react";
-import { ExternalLink, Github, Star, Calendar, Code } from "lucide-react";
+import { ExternalLink, Github, ArrowUpRight } from "lucide-react";
 import ProjectModal from "./ProjectModal";
 
+interface Project {
+  title: string;
+  description: string;
+  type: string;
+  year: string;
+  technologies: string[];
+  image: string;
+  github: string;
+  live: string;
+  images: string[];
+  featured?: boolean;
+}
+
+const projects: Project[] = [
+  {
+    title: "Enterprise ERP System",
+    description:
+      "Led full-stack architecture of a multi-tenant, production ERP serving thousands of daily users. 8 NestJS microservices behind an API Gateway, Angular 20 frontend with Signals-based state, 200+ RBAC permissions, RabbitMQ event-driven messaging, AWS ECS/RDS infrastructure, CI/CD via GitHub Actions, and an AI assistant powered by LangChain + GPT-4o + pgvector.",
+    type: "Enterprise",
+    year: "2026",
+    technologies: [
+      "NestJS",
+      "Angular 20",
+      "AWS ECS/RDS",
+      "RabbitMQ",
+      "Docker",
+      "LangChain",
+      "pgvector",
+      "TypeScript",
+    ],
+    image: "/assets/projects/erp/erp-1.png",
+    github: "https://github.com/adedamolacoal",
+    live: "https://asl-test.vercel.app",
+    images: [
+      "/assets/projects/erp/erp-1.png",
+      "/assets/projects/erp/erp-2.png",
+    ],
+    featured: true,
+  },
+  {
+    title: "Online Examination Platform",
+    description:
+      "Angular 20 exam platform with standalone components and tree-shakeable modular architecture. Includes a full question bank manager with bulk import, an exam interface with real-time timer, auto-save, and answer submission, and route guards for exam access control.",
+    type: "EdTech",
+    year: "2025",
+    technologies: [
+      "Angular 20",
+      "Tailwind CSS",
+      "RxJS",
+      "Reactive Forms",
+      "Vue Router",
+    ],
+    image: "/assets/projects/exam/exam-1.png",
+    github: "https://github.com/adedamolacoal",
+    live: "#",
+    images: ["/assets/projects/exam/exam-1.png"],
+    featured: true,
+  },
+  {
+    title: "Healthcare Emergency Backend",
+    description:
+      "Node.js / Express backend for an emergency healthcare platform. RESTful APIs for appointments, patients, treatments, and prescriptions. Integrated Brevo and Termii for real-time email/SMS, WebSockets for live doctor–patient comms, PrismaORM with PostgreSQL, containerised with Docker, reverse-proxied through Nginx.",
+    type: "Healthcare",
+    year: "2025",
+    technologies: [
+      "Node.js",
+      "Express.js",
+      "PrismaORM",
+      "PostgreSQL",
+      "WebSockets",
+      "Docker",
+      "Nginx",
+    ],
+    image: "/assets/projects/health/health-1.png",
+    github: "https://github.com/adedamolacoal",
+    live: "#",
+    images: ["/assets/projects/health/health-1.png"],
+  },
+  {
+    title: "Learning Management System",
+    description:
+      "Full-stack role-based LMS with multiple learner tiers, Stripe payment processing, real-time progress tracking, and a comprehensive admin dashboard. Angular frontend with Node.js/Express backend and MongoDB.",
+    type: "EdTech",
+    year: "2024",
+    technologies: [
+      "Angular",
+      "Node.js",
+      "MongoDB",
+      "Stripe",
+      "RxJS",
+      "Bootstrap",
+    ],
+    image: "/assets/projects/prepstation/lms-1.png",
+    github: "https://github.com/adedamolacoal",
+    live: "https://prepstation-fe.vercel.app/",
+    images: [
+      "/assets/projects/prepstation/lms-1.png",
+      "/assets/projects/prepstation/lms-2.png",
+    ],
+    featured: true,
+  },
+  {
+    title: "Fintech Mobile & Web App",
+    description:
+      "Hybrid fintech app built with Ionic 6 and Angular 16. Financial dashboard with real-time balance and analytics, money-saving and beneficiary management, biometric login (fingerprint/Face ID) via Capacitor, push notifications, secure data storage, and full responsive web + mobile support.",
+    type: "Fintech",
+    year: "2024",
+    technologies: [
+      "Ionic 6",
+      "Angular 16",
+      "Capacitor",
+      "Vue 3",
+      "Pinia",
+      "JWT",
+    ],
+    image: "/assets/projects/thrively/th-1.png",
+    github: "https://github.com/adedamolacoal",
+    live: "#",
+    images: ["/assets/projects/thrively/th-1.png"],
+  },
+  {
+    title: "Movies Trend",
+    description:
+      "Vanilla JS movie discovery app consuming the TMDB API. Clean DOM architecture, async data fetching, and responsive CSS — no framework overhead.",
+    type: "Frontend",
+    year: "2022",
+    technologies: ["JavaScript", "HTML", "CSS3", "TMDB API"],
+    image: "/assets/projects/mt/mt-1.png",
+    github: "https://github.com/adedamolacoal/movies-trend",
+    live: "https://movies-trend.vercel.app/",
+    images: ["/assets/projects/mt/mt-1.png", "/assets/projects/mt/mt-2.png"],
+  },
+];
+
+const filters = [
+  "All",
+  "Enterprise",
+  "EdTech",
+  "Healthcare",
+  "Fintech",
+  "Frontend",
+];
+
+const typeColors: Record<string, { text: string; border: string }> = {
+  Enterprise: { text: "#a78bfa", border: "rgba(167,139,250,0.3)" },
+  EdTech: { text: "#60a5fa", border: "rgba(96,165,250,0.3)" },
+  Healthcare: { text: "#34d399", border: "rgba(52,211,153,0.3)" },
+  Fintech: { text: "#f59e0b", border: "rgba(245,158,11,0.3)" },
+  Frontend: { text: "#fb923c", border: "rgba(251,146,60,0.3)" },
+};
+
 const Projects = () => {
-  const [selectedProject, setSelectedProject] = useState(null);
+  const [filter, setFilter] = useState("All");
+  const [selectedProject, setSelectedProject] = useState<Project | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [filter, setFilter] = useState("all");
+  const [view, setView] = useState<"grid" | "list">("grid");
 
-  const openModal = (project) => {
-    setSelectedProject(project);
-    setIsModalOpen(true);
-  };
-
-  const closeModal = () => {
-    setIsModalOpen(false);
-    setSelectedProject(null);
-  };
-
-  const projects = [
-    {
-      title: "Learning Management System",
-      description:
-        "A full-stack role based learning management system built with Angular, Node.js, and MongoDB. Features include user authentication, payment processing, admin dashboard, and more.",
-      technologies: [
-        "Angular",
-        "Node.js",
-        "MongoDB",
-        "Stripe",
-        "RxJs",
-        "Bootstrap",
-      ],
-      image: "/assets/projects/prepstation/lms-1.png",
-      github: "https://github.com/adedamolacoal",
-      live: "https://prepstation-fe.vercel.app/",
-      images: [
-        "/assets/projects/prepstation/lms-1.png",
-        "/assets/projects/prepstation/lms-2.png",
-      ],
-    },
-    {
-      title: "Enterprise Resource Planning System",
-      description:
-        "A minimal enterprise resource planning system built with Angular on the frontend and handled by me. Features include a role based access control (RBAC) on the backend.",
-      technologies: ["Angular", "RxJs", "Bootstrap", "SASS", "TypeScript"],
-      image: "/assets/projects/asl/erp-1.png",
-      github: "https://github.com/adedamolacoal",
-      live: "https://asl-test.vercel.app",
-      images: [
-        "/assets/projects/asl/erp-1.png",
-        "/assets/projects/asl/erp-2.png",
-      ],
-    },
-    {
-      title: "Movies Trend",
-      description:
-        "A static movies website built with just HTML, CSS and JavaScript. It uses the TMDB API to fetch the movies data.",
-      technologies: ["JavaScript", "HTML", "CSS", "TMDB API"],
-      image: "/assets/projects/mt/mt-1.png",
-      github: "https://github.com/adedamolacoal/movies-trend",
-      live: "https://movies-trend.vercel.app/",
-      images: [
-        "/assets/projects/mt/mt-1.png",
-        "/assets/projects/mt/mt-2.png",
-        "/assets/projects/mt/mt-3.png",
-        "/assets/projects/mt/mt-4.png",
-      ],
-    },
-    {
-      title: "Portfolio Website",
-      description:
-        "A modern, responsive portfolio website with smooth animations and professional design. Using the React framework, Framer Motion for animations, TypeScript for type safety, and Tailwind CSS for styling.",
-      technologies: ["React", "Framer Motion", "TypeScript", "Tailwind CSS"],
-      image: "/assets/projects/pw/pw-1.png",
-      github: "https://github.com/AdedamolaCoal/my_portfolio",
-      live: "https://adedamola-portfolio-ten.vercel.app",
-      images: [
-        "/assets/projects/pw/pw-1.png",
-        "/assets/projects/pw/pw-2.png",
-        "/assets/projects/pw/pw-3.png",
-        "/assets/projects/pw/pw-4.png",
-        "/assets/projects/pw/pw-5.png",
-        "/assets/projects/pw/pw-6.png",
-      ],
-    },
-  ];
-
-  const getProjectType = (title: string) => {
-    if (
-      title.includes("Learning Management") ||
-      title.includes("Enterprise Resource")
-    ) {
-      return "enterprise";
-    } else if (title.includes("Movies")) {
-      return "frontend";
-    } else if (title.includes("Portfolio")) {
-      return "personal";
-    }
-    return "other";
-  };
-
-  const filteredProjects = projects.filter((project) => {
-    if (filter === "all") return true;
-    return getProjectType(project.title) === filter;
-  });
+  const filtered =
+    filter === "All" ? projects : projects.filter((p) => p.type === filter);
 
   return (
     <section
       id="projects"
-      className="container pl-10 p-2 project-page px-4 pb-12 pt-4 sm:py-14"
+      className="projects-section"
     >
-      {/* HTML Comment Elements */}
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 0.5, duration: 0.8 }}
-        className="text-yellow-400 fixed sm:top-12 top-20 left-8 sm:left-28 font-Aurore -scroll-my-2.5"
+      <div className="max-w-6xl mx-auto pl-10 sm:pl-16 pr-6 py-24">
+      {/* Section label */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.5 }}
+        className="flex items-center gap-4 mb-12"
       >
-        &lt;body&gt;
-      </motion.span>
-
-      <div>
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.2, duration: 0.8 }}
-          className="mb-12"
+        <span
+          className="font-mono text-xs uppercase tracking-[0.25em]"
+          style={{ color: "var(--accent)" }}
         >
-          <span className="text-6xl sm:text-7xl font-bold text-glow">
-            <span className="string-animate-hover _15 text-yellow-400">P</span>
-            <span className="string-animate-hover _16 text-yellow-400">r</span>
-            <span className="string-animate-hover _17 text-yellow-400">o</span>
-            <span className="string-animate-hover _18 text-yellow-400">j</span>
-            <span className="string-animate-hover _19 text-yellow-400">e</span>
-            <span className="string-animate-hover _20 text-yellow-400">c</span>
-            <span className="string-animate-hover _21 text-yellow-400">t</span>
-            <span className="string-animate-hover _22 text-yellow-400">s</span>
-          </span>
-        </motion.h1>
+          03 / Projects
+        </span>
+        <span
+          className="flex-1 h-px max-w-xs"
+          style={{ background: "var(--border-subtle)" }}
+        />
+      </motion.div>
 
-        {/* Project Stats */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4, duration: 0.8 }}
-          className="mb-12 grid grid-cols-2 md:grid-cols-4 gap-6"
-        >
-          <div className="text-center p-4 bg-gradient-to-br from-yellow-400/10 to-orange-500/10 rounded-xl border border-yellow-400/20">
-            <div className="text-3xl font-bold text-yellow-400 mb-2">
-              {projects.length}
-            </div>
-            <div className="text-sm text-gray-300">Total Projects</div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-blue-400/10 to-blue-500/10 rounded-xl border border-blue-400/20">
-            <div className="text-3xl font-bold text-blue-400 mb-2">4</div>
-            <div className="text-sm text-gray-300">Technologies</div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-green-400/10 to-green-500/10 rounded-xl border border-green-400/20">
-            <div className="text-3xl font-bold text-green-400 mb-2">100%</div>
-            <div className="text-sm text-gray-300">Success Rate</div>
-          </div>
-          <div className="text-center p-4 bg-gradient-to-br from-purple-400/10 to-purple-500/10 rounded-xl border border-purple-400/20">
-            <div className="text-3xl font-bold text-purple-400 mb-2">∞</div>
-            <div className="text-sm text-gray-300">Creativity</div>
-          </div>
-        </motion.div>
-
-        {/* Filter Buttons */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mb-8 flex flex-wrap gap-4 justify-center"
-        >
-          {[
-            { key: "all", label: "All Projects", count: projects.length },
-            {
-              key: "enterprise",
-              label: "Enterprise",
-              count: projects.filter(
-                (p) => getProjectType(p.title) === "enterprise"
-              ).length,
-            },
-            {
-              key: "frontend",
-              label: "Frontend",
-              count: projects.filter(
-                (p) => getProjectType(p.title) === "frontend"
-              ).length,
-            },
-            {
-              key: "personal",
-              label: "Personal",
-              count: projects.filter(
-                (p) => getProjectType(p.title) === "personal"
-              ).length,
-            },
-          ].map((filterOption) => (
-            <motion.button
-              key={filterOption.key}
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setFilter(filterOption.key)}
-              className={`px-6 py-3 rounded-full font-medium transition-all duration-200 ${
-                filter === filterOption.key
-                  ? "bg-yellow-400 text-black shadow-lg"
-                  : "bg-white/10 text-white hover:bg-white/20 border border-white/20"
-              }`}
+      <motion.div
+        initial={{ opacity: 0, y: 24 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.6 }}
+      >
+        {/* Header + controls */}
+        <div className="flex flex-wrap items-end justify-between gap-6 mb-10">
+          <div>
+            <h2
+              className="text-4xl sm:text-5xl font-bold mb-3 leading-tight"
+              style={{ color: "var(--text-primary)" }}
             >
-              {filterOption.label} ({filterOption.count})
-            </motion.button>
-          ))}
-        </motion.div>
-      </div>
+              Selected work
+            </h2>
+            <p className="max-w-md" style={{ color: "var(--text-secondary)" }}>
+              Enterprise, healthcare, fintech, edtech — shipped end-to-end.
+            </p>
+          </div>
 
-      <div className="card-container gap-8 w-full grid grid-cols-1 md:grid-cols-2 lg:pl-8 lg:grid-cols-3">
-        {filteredProjects.map((project, index) => (
-          <motion.div
-            key={project.title}
-            initial={{ opacity: 0, y: 50 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.4 + index * 0.2, duration: 0.8 }}
-            whileHover={{ y: -10, scale: 1.02 }}
-            className="project-card cursor-pointer animate-card flex flex-col gap-2 bg-white shadow-lg hover:shadow-2xl mx-auto transition-all duration-300 rounded-lg overflow-hidden relative group"
-            onClick={() => openModal(project)}
-          >
-            {/* Project Type Badge */}
-            <div className="absolute top-4 left-4 z-10">
-              <span
-                className={`px-3 py-1 text-xs font-medium rounded-full ${
-                  getProjectType(project.title) === "enterprise"
-                    ? "bg-blue-500 text-white"
-                    : getProjectType(project.title) === "frontend"
-                    ? "bg-green-500 text-white"
-                    : "bg-purple-500 text-white"
-                }`}
-              >
-                {getProjectType(project.title).charAt(0).toUpperCase() +
-                  getProjectType(project.title).slice(1)}
-              </span>
+          <div className="flex items-center gap-3 flex-wrap">
+            {/* Filters */}
+            <div className="flex gap-1 flex-wrap">
+              {filters.map((f) => (
+                <button
+                  key={f}
+                  onClick={() => setFilter(f)}
+                  className="font-mono text-xs px-3 py-1.5 uppercase tracking-widest transition-colors duration-200"
+                  style={
+                    filter === f
+                      ? { background: "var(--accent)", color: "var(--text-inverse)" }
+                      : {
+                          color: "var(--text-muted)",
+                          border: "1px solid var(--border-subtle)",
+                        }
+                  }
+                  onMouseEnter={(e) => {
+                    if (filter !== f) {
+                      e.currentTarget.style.color = "var(--text-primary)";
+                      e.currentTarget.style.borderColor = "var(--border-default)";
+                    }
+                  }}
+                  onMouseLeave={(e) => {
+                    if (filter !== f) {
+                      e.currentTarget.style.color = "var(--text-muted)";
+                      e.currentTarget.style.borderColor = "var(--border-subtle)";
+                    }
+                  }}
+                >
+                  {f}
+                </button>
+              ))}
             </div>
 
-            {/* Featured Badge */}
-            <div className="absolute top-4 right-4 z-10">
-              <Star className="w-5 h-5 text-yellow-400 fill-current" />
+            {/* View toggle */}
+            <div
+              className="flex"
+              style={{ border: "1px solid var(--border-subtle)" }}
+            >
+              {(["grid", "list"] as const).map((v) => (
+                <button
+                  key={v}
+                  onClick={() => setView(v)}
+                  className="px-3 py-1.5 font-mono text-xs capitalize transition-colors"
+                  style={
+                    view === v
+                      ? {
+                          background: "var(--bg-raised)",
+                          color: "var(--text-primary)",
+                        }
+                      : { color: "var(--text-muted)" }
+                  }
+                >
+                  {v}
+                </button>
+              ))}
             </div>
+          </div>
+        </div>
 
-            <div className="relative overflow-hidden">
-              <img
-                alt={project.title}
-                className="h-48 w-full object-cover group-hover:scale-105 transition-transform duration-300"
-                src={project.image}
-              />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-                <div className="bg-white/90 backdrop-blur-sm rounded-lg px-4 py-2 text-black font-medium">
-                  Click to view details
-                </div>
-              </div>
-            </div>
-
-            <div className="p-5 flex-1 flex flex-col">
-              <div className="flex items-start justify-between mb-3">
-                <h2 className="text-xl font-semibold text-black flex-1">
-                  {project.title}
-                </h2>
-                <div className="flex items-center text-yellow-500 text-sm">
-                  <Calendar className="w-4 h-4 mr-1" />
-                  <span>2024</span>
-                </div>
-              </div>
-
-              <p className="text-gray-600 mb-4 text-sm leading-relaxed flex-1">
-                {project.description}
-              </p>
-
-              <div className="flex flex-wrap gap-2 mb-4">
-                {project.technologies.slice(0, 3).map((tech) => (
-                  <motion.span
-                    key={tech}
-                    whileHover={{ scale: 1.05 }}
-                    className="bg-gray-100 text-gray-700 px-3 py-1 text-xs font-medium rounded-full border border-gray-200 hover:bg-gray-200 transition-colors"
+        {/* Views */}
+        <AnimatePresence mode="wait">
+          {view === "grid" ? (
+            <motion.div
+              key="grid"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              className="grid sm:grid-cols-2 lg:grid-cols-3"
+              style={{
+                border: "1px solid var(--border-subtle)",
+                gap: "1px",
+                background: "var(--border-subtle)",
+              }}
+            >
+              {filtered.map((project, i) => {
+                const tc = typeColors[project.type] ?? {
+                  text: "#9499a8",
+                  border: "rgba(255,255,255,0.2)",
+                };
+                return (
+                  <motion.article
+                    key={project.title}
+                    initial={{ opacity: 0 }}
+                    animate={{ opacity: 1 }}
+                    transition={{ delay: i * 0.07 }}
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setIsModalOpen(true);
+                    }}
+                    className="relative p-6 cursor-pointer transition-colors duration-200"
+                    style={{ background: "var(--bg-surface)" }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background = "var(--bg-raised)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "var(--bg-surface)")
+                    }
                   >
-                    {tech}
-                  </motion.span>
-                ))}
-                {project.technologies.length > 3 && (
-                  <span className="bg-gray-100 text-gray-500 px-3 py-1 text-xs font-medium rounded-full border border-gray-200">
-                    +{project.technologies.length - 3}
-                  </span>
+                    {project.featured && (
+                      <span
+                        className="absolute top-5 right-5 font-mono text-xs px-2 py-0.5"
+                        style={{
+                          color: "var(--accent)",
+                          border: "1px solid var(--accent-dim)",
+                        }}
+                      >
+                        Featured
+                      </span>
+                    )}
+
+                    <div className="flex items-center gap-3 mb-4">
+                      <span
+                        className="font-mono text-xs px-2 py-0.5"
+                        style={{
+                          color: tc.text,
+                          border: `1px solid ${tc.border}`,
+                        }}
+                      >
+                        {project.type}
+                      </span>
+                      <span
+                        className="font-mono text-xs"
+                        style={{ color: "#52566a" }}
+                      >
+                        {project.year}
+                      </span>
+                    </div>
+
+                    <h3
+                      className="text-base font-semibold mb-2 transition-colors duration-200"
+                      style={{ color: "var(--text-primary)" }}
+                      onMouseEnter={(e) =>
+                        (e.currentTarget.style.color = "var(--accent)")
+                      }
+                      onMouseLeave={(e) =>
+                        (e.currentTarget.style.color = "var(--text-primary)")
+                      }
+                    >
+                      {project.title}
+                    </h3>
+                    <p
+                      className="text-sm leading-relaxed mb-5 line-clamp-3"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {project.description}
+                    </p>
+
+                    <div className="flex flex-wrap gap-1.5 mb-5">
+                      {project.technologies.slice(0, 4).map((t) => (
+                        <span
+                          key={t}
+                          className="font-mono text-xs px-2 py-0.5"
+                          style={{
+                            color: "#52566a",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                          }}
+                        >
+                          {t}
+                        </span>
+                      ))}
+                      {project.technologies.length > 4 && (
+                        <span
+                          className="font-mono text-xs px-2 py-0.5"
+                          style={{
+                            color: "#52566a",
+                            border: "1px solid rgba(255,255,255,0.08)",
+                          }}
+                        >
+                          +{project.technologies.length - 4}
+                        </span>
+                      )}
+                    </div>
+
+                    <div className="flex items-center justify-between">
+                      <div className="flex gap-4">
+                        {[
+                          {
+                            href: project.live,
+                            Icon: ExternalLink,
+                            label: "Live",
+                          },
+                          { href: project.github, Icon: Github, label: "Code" },
+                        ].map(({ href, Icon, label }) => (
+                          <a
+                            key={label}
+                            href={href}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            onClick={(e) => e.stopPropagation()}
+                            className="flex items-center gap-1 text-xs font-mono transition-colors"
+                            style={{ color: "var(--text-muted)" }}
+                            onMouseEnter={(e) =>
+                              (e.currentTarget.style.color = "var(--accent)")
+                            }
+                            onMouseLeave={(e) =>
+                              (e.currentTarget.style.color = "var(--text-muted)")
+                            }
+                          >
+                            <Icon size={12} /> {label}
+                          </a>
+                        ))}
+                      </div>
+                      <span
+                        className="flex items-center gap-1 text-xs font-mono"
+                        style={{ color: "var(--text-muted)" }}
+                      >
+                        Details <ArrowUpRight size={12} />
+                      </span>
+                    </div>
+                  </motion.article>
+                );
+              })}
+            </motion.div>
+          ) : (
+            <motion.div
+              key="list"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              style={{ border: "1px solid var(--border-subtle)" }}
+            >
+              {/* Table head */}
+              <div
+                className="grid grid-cols-12 gap-4 px-6 py-3"
+                style={{ borderBottom: "1px solid var(--border-subtle)" }}
+              >
+                {["#", "Project", "Type", "Stack", "Year", "Links"].map(
+                  (h, idx) => (
+                    <span
+                      key={h}
+                      className={`font-mono text-xs uppercase tracking-widest ${
+                        idx === 0
+                          ? "col-span-1"
+                          : idx === 1
+                            ? "col-span-4"
+                            : idx === 2
+                              ? "col-span-2 hidden md:block"
+                              : idx === 3
+                                ? "col-span-3 hidden lg:block"
+                                : idx === 4
+                                  ? "col-span-1 hidden md:block"
+                                  : "col-span-1"
+                      }`}
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      {h}
+                    </span>
+                  ),
                 )}
               </div>
 
-              <div className="flex items-center justify-between mt-auto">
-                <div className="flex gap-4">
-                  <motion.a
-                    href={project.live}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
-                    onClick={(e) => e.stopPropagation()}
+              {filtered.map((project, i) => {
+                const tc = typeColors[project.type] ?? {
+                  text: "#9499a8",
+                  border: "",
+                };
+                return (
+                  <motion.div
+                    key={project.title}
+                    initial={{ opacity: 0, x: -8 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    transition={{ delay: i * 0.06 }}
+                    onClick={() => {
+                      setSelectedProject(project);
+                      setIsModalOpen(true);
+                    }}
+                    className="grid grid-cols-12 gap-4 px-6 py-5 items-center cursor-pointer transition-colors duration-200"
+                    style={{
+                      borderBottom: "1px solid var(--border-subtle)",
+                      background: "transparent",
+                    }}
+                    onMouseEnter={(e) =>
+                      (e.currentTarget.style.background =
+                        "rgba(255,255,255,0.03)")
+                    }
+                    onMouseLeave={(e) =>
+                      (e.currentTarget.style.background = "transparent")
+                    }
                   >
-                    <ExternalLink size={16} />
-                    Live
-                  </motion.a>
-                  <motion.a
-                    href={project.github}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                    className="flex items-center gap-2 text-gray-600 hover:text-gray-700 font-medium text-sm transition-colors"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    <Github size={16} />
-                    Code
-                  </motion.a>
-                </div>
-                <div className="flex items-center text-gray-500 text-sm">
-                  <Code className="w-4 h-4 mr-1" />
-                  <span>{project.technologies.length} techs</span>
-                </div>
-              </div>
-            </div>
-          </motion.div>
-        ))}
+                    <span
+                      className="col-span-1 font-mono text-xs"
+                      style={{ color: "var(--text-muted)" }}
+                    >
+                      0{i + 1}
+                    </span>
+                    <div className="col-span-4">
+                      <p
+                        className="text-sm font-semibold"
+                        style={{ color: "var(--text-primary)" }}
+                      >
+                        {project.title}
+                      </p>
+                      <p
+                        className="text-xs mt-0.5 hidden sm:block line-clamp-1"
+                        style={{ color: "#52566a" }}
+                      >
+                        {project.description}
+                      </p>
+                    </div>
+                    <span
+                      className="col-span-2 font-mono text-xs hidden md:block"
+                      style={{ color: tc.text }}
+                    >
+                      {project.type}
+                    </span>
+                    <div className="col-span-3 hidden lg:flex flex-wrap gap-1">
+                      {project.technologies.slice(0, 3).map((t, ti) => (
+                        <span
+                          key={t}
+                          className="font-mono text-xs"
+                          style={{ color: "#52566a" }}
+                        >
+                          {t}
+                          {ti < 2 && ti < project.technologies.length - 1
+                            ? ","
+                            : ""}
+                        </span>
+                      ))}
+                    </div>
+                    <span
+                      className="col-span-1 font-mono text-xs hidden md:block"
+                      style={{ color: "#52566a" }}
+                    >
+                      {project.year}
+                    </span>
+                    <div className="col-span-1 flex gap-3">
+                      {[
+                        {
+                          href: project.live,
+                          Icon: ExternalLink,
+                          label: "Live",
+                        },
+                        { href: project.github, Icon: Github, label: "Code" },
+                      ].map(({ href, Icon, label }) => (
+                        <a
+                          key={label}
+                          href={href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          onClick={(e) => e.stopPropagation()}
+                          aria-label={label}
+                          style={{ color: "var(--text-muted)" }}
+                          onMouseEnter={(e) =>
+                            (e.currentTarget.style.color = "var(--accent)")
+                          }
+                          onMouseLeave={(e) =>
+                            (e.currentTarget.style.color = "var(--text-muted)")
+                          }
+                        >
+                          <Icon size={14} />
+                        </a>
+                      ))}
+                    </div>
+                  </motion.div>
+                );
+              })}
+            </motion.div>
+          )}
+        </AnimatePresence>
 
-        {/* Empty State */}
-        {filteredProjects.length === 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="col-span-full text-center py-16"
+        {filtered.length === 0 && (
+          <div
+            className="py-16 text-center"
+            style={{ border: "1px solid var(--border-subtle)" }}
           >
-            <div className="w-24 h-24 bg-gray-100 rounded-full flex items-center justify-center mx-auto mb-6">
-              <Code className="w-12 h-12 text-gray-400" />
-            </div>
-            <h3 className="text-2xl font-semibold text-gray-600 mb-4">
-              No projects found
-            </h3>
-            <p className="text-gray-500 mb-6">
-              Try selecting a different filter to see more projects.
+            <p className="font-mono text-sm" style={{ color: "var(--text-muted)" }}>
+              No projects match this filter.
             </p>
-            <motion.button
-              whileHover={{ scale: 1.05 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => setFilter("all")}
-              className="px-6 py-3 bg-yellow-400 text-black font-medium rounded-lg hover:bg-yellow-500 transition-colors"
+            <button
+              onClick={() => setFilter("All")}
+              className="mt-4 font-mono text-xs underline"
+              style={{ color: "var(--accent)" }}
             >
-              Show All Projects
-            </motion.button>
-          </motion.div>
+              Clear filter
+            </button>
+          </div>
         )}
-      </div>
+      </motion.div>
 
-      {/* HTML Comment Elements */}
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.5, duration: 0.8 }}
-        className="text-yellow-400 fixed bottom-12 left-8 sm:left-28 font-Aurore"
-      >
-        &lt;/body&gt;
-      </motion.span>
-      <br />
-      <motion.span
-        initial={{ opacity: 0, x: -20 }}
-        animate={{ opacity: 1, x: 0 }}
-        transition={{ delay: 1.7, duration: 0.8 }}
-        className="text-yellow-400 fixed bottom-5 sm:left-20 font-Aurore"
-      >
-        &lt;/html&gt;
-      </motion.span>
-
-      {/* Project Modal */}
       <ProjectModal
         isOpen={isModalOpen}
-        onClose={closeModal}
+        onClose={() => {
+          setIsModalOpen(false);
+          setSelectedProject(null);
+        }}
         project={selectedProject}
       />
+    </div>
     </section>
   );
 };
